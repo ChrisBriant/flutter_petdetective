@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../screens/signin_screen.dart';
+import '../screens/register_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   static final routeName = '/home';
@@ -30,7 +31,7 @@ class HomeScreen extends StatelessWidget {
                 child: Text('Sign In'),
               ),
               ElevatedButton(
-                onPressed: () {}, 
+                onPressed: () => Navigator.of(context).pushNamed(RegisterScreen.routeName),  
                 child: Text('Register')
               ),
             ],),

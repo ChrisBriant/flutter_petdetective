@@ -10,11 +10,23 @@ import 'package:http/http.dart' as http;
 import '../models/http_exception.dart';
 
 class Auth with ChangeNotifier {
+  static const String BASEURL = 'https://petdetectivebackend.chrisbriant.uk/api'; 
+
   Map<String,dynamic> _formData = {};
 
   Auth(
     this._formData
   );
+
+  addToForm(String key,dynamic val) {
+    print('Adding to form');
+    _formData[key] = val;
+    notifyListeners();
+  }
+
+  dynamic getFormValue(String key) {
+    return _formData[key];
+  }
 
   bool _justSignedUp = false;
 
@@ -38,7 +50,7 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> _authenticate(String email, String password) async {
-    final url = Uri.parse('https://authapi.chrisbriant.uk/api/account/authenticate/');
+    final url = Uri.parse('$BASEURL/account/authenticate/');
     try {
       final res = await http.post(
         url, 
@@ -81,7 +93,7 @@ class Auth with ChangeNotifier {
     final String refresh = extractedUserData['refresh'] as String; 
     if(expiryDate.isBefore(DateTime.now())) {
       //Try refresh token
-      final url = Uri.parse('https://authapi.chrisbriant.uk/api/account/refresh/');
+      final url = Uri.parse('$BASEURL/account/refresh/');
       try {
         final res = await http.post(
           url, 
@@ -106,8 +118,14 @@ class Auth with ChangeNotifier {
   }
 
 
-  Future<bool> signup(String email,String password,String passchk,String username) async {
-    final url = Uri.parse('https://authapi.chrisbriant.uk/api/account/register/');
+  Future<bool> signup(String email,String password,String passchk,String username,bool isDetective) async {
+    final url = Uri.parse('$BASEURL/account/register/');
+    print('$BASEURL/account/register/');
+    print(username);
+    print(password);
+    print(passchk);
+    print(username);
+    print(isDetective);
     try {
       final res = await http.post(
         url, 
@@ -115,7 +133,8 @@ class Auth with ChangeNotifier {
           'username' : username,
           'email' : email,
           'password' : password,
-          'passchk' : passchk
+          'passchk' : passchk,
+          'is_detective': isDetective
         }),
         headers: {'Content-Type': 'application/json'},
       );
