@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../validators/validators.dart';
 import '../widgets/card_header.dart';
 
 class AddPetScreen extends StatelessWidget {
+  // List<XFile>? _imageFileList;
+
+  // set _imageFile(XFile? value) {
+  //   _imageFileList = value == null ? null : [value];
+  // }
+
+  //final ImagePicker _picker = ImagePicker();
+
   static String routeName = '/addpet';
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
