@@ -69,8 +69,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         String _passChk = _form.getFormValue('passchk');
         String _username = _form.getFormValue('username');
 
-        print(!_regType);
-
         _success = await _form.signup (
           _email,
           _password,

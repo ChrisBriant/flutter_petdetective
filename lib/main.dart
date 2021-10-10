@@ -8,6 +8,7 @@ import '../screens/wait_screen.dart';
 import '../screens/register_screen.dart';
 import '../screens/authed_home_screen.dart';
 import '../screens/signup_completed_screen.dart';
+import '../screens/add_pet_screen.dart';
 
 void main() {
   runApp(PetDetective());
@@ -55,6 +56,7 @@ class PetDetective extends StatelessWidget {
             RegisterScreen.routeName : (ctx) => RegisterScreen(),
             SignupCompleteScreen.routeName : (ctx) => SignupCompleteScreen(),
             AuthedHomeScreen.routeName : (ctx) => AuthedHomeScreen(),
+            AddPetScreen.routeName : (ctx) => AddPetScreen(),
           },
         ),
       ),
