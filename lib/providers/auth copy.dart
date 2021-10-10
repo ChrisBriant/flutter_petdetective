@@ -85,13 +85,13 @@ class Auth with ChangeNotifier {
     } catch(err) {
       throw err;
     }
-    notifyListeners();
   }
 
   Future<bool> isAuthenticated() async {
     final prefs = await SharedPreferences.getInstance();
 
     if(!prefs.containsKey('userData')) {
+      print('I am not authenticated');
       return false;
     }
 
@@ -167,6 +167,7 @@ class Auth with ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
 
     if(prefs.containsKey('userData')) {
+      print('I am supposed to destroy the token');
       prefs.remove('userData');
     }
     notifyListeners();

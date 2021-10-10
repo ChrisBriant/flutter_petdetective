@@ -25,10 +25,20 @@ class SigninScreen extends StatelessWidget {
         _formKey.currentState!.save();
         print(_form.getFormValue('email'));
         print(_form.getFormValue('password'));
-        await Provider.of<Auth>(context, listen: false).signin (
-          _form.getFormValue('email')!,
-          _form.getFormValue('password')!,
-        );
+        try {
+          await _form.signin (
+            _form.getFormValue('email')!,
+            _form.getFormValue('password')!,
+          );
+        } catch(err) {
+          print(err);
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(err.toString()),
+          ));
+          return;
+        }
+        Navigator.of(context).pop();
+        //Navigator.of(context).pushReplacementNamed(AuthedHomeScreen.routeName);
       }
     }
 
@@ -65,9 +75,9 @@ class SigninScreen extends StatelessWidget {
                             ),
                             TextFormField(
                               decoration: InputDecoration(labelText: 'Password'),
-                              //obscureText: true,
+                              obscureText: true,
                               keyboardType: TextInputType.visiblePassword,
-                              validator: (value) => Validators.validPassword(value),
+                              validator: (value) => Validators.validText(value),
                               onSaved: (value) { _form.addToForm('password', value); },
                               onTap: () {},
                             ),

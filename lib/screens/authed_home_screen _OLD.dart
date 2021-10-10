@@ -22,13 +22,13 @@ class AuthedHomeScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          FutureBuilder(
-            builder: (ctx,isDetective) =>  isDetective.connectionState == ConnectionState.waiting
-              ? WaitScreen()
-              : isDetective.data == true
-                ? Text('You are a detective')
-                : Text('You are an owner') 
-          ),
+          // FutureBuilder(
+          //   builder: (ctx,isDetective) =>  isDetective.connectionState == ConnectionState.waiting
+          //     ? WaitScreen()
+          //     : isDetective.data == true
+          //       ? Text('You are a detective')
+          //       : Text('You are an owner') 
+          // ),
           Center(
             child: Text('You are Autneticated!',
               style: TextStyle(fontSize: 25),

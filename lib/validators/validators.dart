@@ -42,6 +42,14 @@ class Validators {
     return null;
   }
 
+    static String? validText(val) {
+    if (val!.isEmpty) {
+      return 'Please enter some text.';
+    }
+    return null;
+  }
+
+
   static String? validPassword(val) {
     //RegExp regExp  = RegExp(r'^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?/~_+-=|\]).{10,32}$');    RegExp regExp  = RegExp(r'^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?/~_+-=|\]).{10,32}$');
     //RegExp regExp  = RegExp(r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!@$%^&(){}:;<>,.?/~_+-=]).{10,}$');

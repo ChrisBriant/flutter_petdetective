@@ -146,7 +146,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ),
                                 TextFormField(
                                   decoration: InputDecoration(labelText: 'Password'),
-                                  //obscureText: true,
+                                  obscureText: true,
                                   keyboardType: TextInputType.visiblePassword,
                                   validator: (value) => Validators.validPassword(value),
                                   onSaved: (value) { _form.addToForm('password', value);  },
@@ -155,7 +155,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ),
                                 TextFormField(
                                   decoration: InputDecoration(labelText: 'Confirm'),
-                                  //obscureText: true,
+                                  obscureText: true,
                                   keyboardType: TextInputType.visiblePassword,
                                   validator: (value) => _validPasswordMatch(value),
                                   onSaved: (value) { _form.addToForm('passchk', value);  },
