@@ -1,24 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../validators/validators.dart';
 import '../widgets/card_header.dart';
+import '../widgets/image_select.dart';
+import '../providers/pet.dart';
 
 class AddPetScreen extends StatelessWidget {
-  // List<XFile>? _imageFileList;
-
-  // set _imageFile(XFile? value) {
-  //   _imageFileList = value == null ? null : [value];
-  // }
-
-  //final ImagePicker _picker = ImagePicker();
-
   static String routeName = '/addpet';
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    final _form = Provider.of<Pet>(context, listen: false);
     
     Future<void> _saveForm() async {
       final isValid = _formKey.currentState!.validate();
@@ -27,6 +21,22 @@ class AddPetScreen extends StatelessWidget {
         return;
       } else {
         print('Form is valid');
+        _formKey.currentState!.save();
+        try {
+          _form.addPet(
+            _form.getFormValue('name'), 
+            _form.getFormValue('animal'), 
+            _form.getFormValue('description'), 
+            _form.getFormValue('lastSeen'), 
+            _form.getFormValue('picture'), 
+            '52.397532',
+            '-1.997979'
+            // _form.getFormValue('lat'), 
+            // _form.getFormValue('lng')
+          );
+        } catch(err) {
+          print(err);
+        }
         return;
       }
     }
@@ -61,37 +71,38 @@ class AddPetScreen extends StatelessWidget {
                                 TextFormField(
                                   decoration: InputDecoration(labelText: 'Name'),
                                   keyboardType: TextInputType.text,
-                                  validator: (value) => Validators.validUserName(value),
-                                  onSaved: (value) {   },
+                                  validator: (value) => Validators.validText(value),
+                                  onSaved: (value) { _form.addToForm('name', value); },
                                   onTap: () {},
                                 ),
                                 TextFormField(
                                   decoration: InputDecoration(labelText: 'Animal'),
                                   keyboardType: TextInputType.text,
-                                  validator: (value) => Validators.validEmail(value),
-                                  onSaved: (value) {   },
+                                  validator: (value) => Validators.validText(value),
+                                  onSaved: (value) { _form.addToForm('animal', value); },
                                   onTap: () {},
                                 ),
                                 TextFormField(
                                   decoration: InputDecoration(labelText: 'Description'),
                                   keyboardType: TextInputType.text,
                                   validator: (value) => Validators.validText(value),
-                                  onSaved: (value) { },
+                                  onSaved: (value) { _form.addToForm('description', value); },
                                   onTap: () {},
                                 ),
                                 TextFormField(
                                   decoration: InputDecoration(labelText: 'Last Seen'),
                                   keyboardType: TextInputType.visiblePassword,
                                   validator: (value) => Validators.validText(value),
-                                  onSaved: (value) {   },
+                                  onSaved: (value) { _form.addToForm('lastSeen', value); },
                                   onTap: () {},
                                 ),
                                 SizedBox(
                                   height: 20,
                                 ),
+                                ImageSelect(false,_form.addToForm),
                                 ElevatedButton(
                                   onPressed: _saveForm, 
-                                  child: Text('Register'))
+                                  child: Text('Add Pet'))
                               ],
                             ),
                           ),

@@ -19,7 +19,6 @@ class Auth with ChangeNotifier {
   );
 
   addToForm(String key,dynamic val) {
-    print('Adding to form');
     _formData[key] = val;
     notifyListeners();
   }

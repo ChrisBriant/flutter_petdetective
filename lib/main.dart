@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../screens/signin_screen.dart';
 import './providers/auth.dart';
+import './providers/pet.dart';
 import '../screens/home_screen.dart';
 import '../screens/wait_screen.dart';
 import '../screens/register_screen.dart';
@@ -26,8 +27,18 @@ class PetDetective extends StatelessWidget {
             'email' : '',
             'passchk' : ''
           })
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => Pet({
+            'name' : '',
+            'description' : '',
+            'lastSeen' : '',
+            'animal' : '',
+            'picture' : '',
+            'lat' : '0.0',
+            'lng' : '0.0'
+          })
         )
-
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth,_) => MaterialApp(
