@@ -5,6 +5,8 @@ import '../validators/validators.dart';
 import '../widgets/card_header.dart';
 import '../widgets/image_select.dart';
 import '../providers/pet.dart';
+import '../providers/location_provider.dart';
+import '../screens/map_screen.dart';
 
 class AddPetScreen extends StatelessWidget {
   static String routeName = '/addpet';
@@ -13,6 +15,7 @@ class AddPetScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _form = Provider.of<Pet>(context, listen: false);
+    final _locationProvider = Provider.of<LocationProvider>(context, listen: true);
     
     Future<void> _saveForm() async {
       final isValid = _formKey.currentState!.validate();
@@ -29,8 +32,8 @@ class AddPetScreen extends StatelessWidget {
             _form.getFormValue('description'), 
             _form.getFormValue('lastSeen'), 
             _form.getFormValue('picture'), 
-            '52.397532',
-            '-1.997979'
+            _locationProvider.lat.toString(),
+            _locationProvider.lng.toString()
             // _form.getFormValue('lat'), 
             // _form.getFormValue('lng')
           );
@@ -54,7 +57,7 @@ class AddPetScreen extends StatelessWidget {
               child: Form(
                 key: _formKey,
                 child: Container(
-                  height: MediaQuery.of(context).size.height * 0.6,
+                  height: MediaQuery.of(context).size.height * 0.82,
                   child: Stack(
                     children: [
                       Card(
@@ -96,12 +99,18 @@ class AddPetScreen extends StatelessWidget {
                                   onSaved: (value) { _form.addToForm('lastSeen', value); },
                                   onTap: () {},
                                 ),
+                                ElevatedButton.icon(
+                                  onPressed: () => Navigator.of(context).pushNamed(MapScreen.routeName), 
+                                  icon: Icon(Icons.location_pin), 
+                                  label: Text('Add Location')
+                                ),
                                 SizedBox(
                                   height: 20,
                                 ),
                                 ImageSelect(false,_form.addToForm),
                                 ElevatedButton(
-                                  onPressed: _saveForm, 
+                                  //onPressed: _saveForm, 
+                                  onPressed: _locationProvider.lat == null || _locationProvider.lng == null ? null : _saveForm,
                                   child: Text('Add Pet'))
                               ],
                             ),

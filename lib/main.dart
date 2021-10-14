@@ -4,12 +4,14 @@ import 'package:provider/provider.dart';
 import '../screens/signin_screen.dart';
 import './providers/auth.dart';
 import './providers/pet.dart';
+import './providers/location_provider.dart';
 import '../screens/home_screen.dart';
 import '../screens/wait_screen.dart';
 import '../screens/register_screen.dart';
 import '../screens/authed_home_screen.dart';
 import '../screens/signup_completed_screen.dart';
 import '../screens/add_pet_screen.dart';
+import '../screens/map_screen.dart';
 
 void main() {
   runApp(PetDetective());
@@ -38,6 +40,9 @@ class PetDetective extends StatelessWidget {
             'lat' : '0.0',
             'lng' : '0.0'
           })
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => LocationProvider()
         )
       ],
       child: Consumer<Auth>(
@@ -68,6 +73,7 @@ class PetDetective extends StatelessWidget {
             SignupCompleteScreen.routeName : (ctx) => SignupCompleteScreen(),
             AuthedHomeScreen.routeName : (ctx) => AuthedHomeScreen(),
             AddPetScreen.routeName : (ctx) => AddPetScreen(),
+            MapScreen.routeName: (ctx) => MapScreen(),
           },
         ),
       ),
