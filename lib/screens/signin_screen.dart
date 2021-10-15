@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../screens/authed_home_screen.dart';
+import 'detective_stack/detective_home_screen.dart';
 import '../validators/validators.dart';
 import '../widgets/card_header.dart';
 import '../providers/auth.dart';

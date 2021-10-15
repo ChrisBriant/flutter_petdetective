@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../validators/validators.dart';
-import '../widgets/card_header.dart';
-import '../widgets/image_select.dart';
-import '../providers/pet.dart';
-import '../providers/location_provider.dart';
-import '../screens/map_screen.dart';
+import '../../validators/validators.dart';
+import '../../widgets/card_header.dart';
+import '../../widgets/image_select.dart';
+import '../../providers/pet.dart';
+import '../../providers/location_provider.dart';
+import '../map_screen.dart';
 
 class AddPetScreen extends StatelessWidget {
   static String routeName = '/addpet';

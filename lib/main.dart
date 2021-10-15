@@ -8,10 +8,12 @@ import './providers/location_provider.dart';
 import '../screens/home_screen.dart';
 import '../screens/wait_screen.dart';
 import '../screens/register_screen.dart';
-import '../screens/authed_home_screen.dart';
+import 'screens/detective_stack/detective_home_screen.dart';
 import '../screens/signup_completed_screen.dart';
-import '../screens/add_pet_screen.dart';
+import 'screens/owner_stack/add_pet_screen.dart';
 import '../screens/map_screen.dart';
+import '../screens/detective_stack/detective_home_screen.dart';
+import '../screens/owner_stack/owner_home_screen.dart';
 
 void main() {
   runApp(PetDetective());
@@ -65,13 +67,22 @@ class PetDetective extends StatelessWidget {
               future: auth.isAuthenticated(),
               builder: (ctx,authed) =>  authed.connectionState == ConnectionState.waiting
               ? WaitScreen()
-              : authed.data == true ? AuthedHomeScreen() : HomeScreen()
+              : authed.data == true 
+                ? FutureBuilder(
+                  future: auth.isDetective(),
+                  builder: (ctx,isDetective) =>  isDetective.connectionState == ConnectionState.waiting
+                  ? WaitScreen()
+                  : isDetective.data == true ? DetectiveHomeScreen() : OwnerHomeScreen() 
+                ) 
+                : HomeScreen()
             ),
           routes: {
             SigninScreen.routeName : (ctx) => SigninScreen(),
             RegisterScreen.routeName : (ctx) => RegisterScreen(),
             SignupCompleteScreen.routeName : (ctx) => SignupCompleteScreen(),
-            AuthedHomeScreen.routeName : (ctx) => AuthedHomeScreen(),
+            //AuthedHomeScreen.routeName : (ctx) => AuthedHomeScreen(),
+            OwnerHomeScreen.routeName : (ctx) => OwnerHomeScreen(),
+            DetectiveHomeScreen.routeName : (ctx) => DetectiveHomeScreen(),
             AddPetScreen.routeName : (ctx) => AddPetScreen(),
             MapScreen.routeName: (ctx) => MapScreen(),
           },

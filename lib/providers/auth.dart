@@ -51,9 +51,6 @@ class Auth with ChangeNotifier {
 
   Future<void> _authenticate(String email, String password) async {
     final url = Uri.parse('$BASEURL/account/authenticate/');
-    print(url);
-    print(email);
-    print(password);
     try {
       final res = await http.post(
         url, 
@@ -73,9 +70,8 @@ class Auth with ChangeNotifier {
           String token = responseData['access'];
           String refresh = responseData['refresh'];
           DateTime? expiryDate = Jwt.getExpiryDate(token);
-          //TODO - The is detective attribute needs to be encoded into the token and then
-          // to set the attribute on the token itself.
-          await _setToken(token, refresh, expiryDate, false);
+          Map<String, dynamic> payload = Jwt.parseJwt(token);
+          await _setToken(token, refresh, expiryDate, payload['is_detective']);
           notifyListeners();
         } else {
           throw HttpException('Something went wrong tying to log on.');
@@ -126,12 +122,7 @@ class Auth with ChangeNotifier {
 
   Future<bool> signup(String email,String password,String passchk,String username,bool isDetective) async {
     final url = Uri.parse('$BASEURL/account/register/');
-    print('$BASEURL/account/register/');
-    print(username);
-    print(password);
-    print(passchk);
-    print(username);
-    print(isDetective);
+
     try {
       final res = await http.post(
         url, 
@@ -177,8 +168,12 @@ class Auth with ChangeNotifier {
 
     if(prefs.containsKey('userData')) {
       Map<String,dynamic> _userData = json.decode(prefs.get('userData') as String);
-      print(_userData['isDetective']);  
-      return true;
+
+      if(_userData['isDetective'] == null) {
+        return false; 
+      } else {
+        return _userData['isDetective']; 
+      } 
     } else {
       print('There is no user data');
     }

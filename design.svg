@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c4e8f9e, 2021-05-24)"
+   sodipodi:docname="design.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.98520767"
+     inkscape:cx="719.64523"
+     inkscape:cy="560.79547"
+     inkscape:window-width="1848"
+     inkscape:window-height="1016"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient125358">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop125354" />
+      <stop
+         style="stop-color:#000000;stop-opacity:0;"
+         offset="1"
+         id="stop125356" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient6314">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop6310" />
+      <stop
+         style="stop-color:#000000;stop-opacity:0;"
+         offset="1"
+         id="stop6312" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6314"
+       id="linearGradient6156"
+       x1="86.501366"
+       y1="75.117889"
+       x2="39.878517"
+       y2="108.06663"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient125358"
+       id="linearGradient125352"
+       x1="130.16045"
+       y1="132.57324"
+       x2="244.83382"
+       y2="170.576"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="opacity:0.997;fill:#000000;fill-opacity:0;stroke-width:0.343958;stroke-linecap:round;stroke-linejoin:round"
+       id="rect846"
+       width="37.294125"
+       height="48.171703"
+       x="72.41185"
+       y="22.841131" />
+    <rect
+       style="opacity:0.997;fill:none;fill-opacity:0;stroke:#000000;stroke-width:0.236786;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       id="rect848"
+       width="44.224262"
+       height="53.001106"
+       x="72.358269"
+       y="22.787544" />
+    <text
+       xml:space="preserve"
+       style="font-size:10.5833px;line-height:1.25;font-family:Kinnari;-inkscape-font-specification:Kinnari;word-spacing:0px;fill:url(#linearGradient6156);fill-opacity:1;stroke-width:0.264583"
+       x="83.483772"
+       y="35.33284"
+       id="text4812"><tspan
+         sodipodi:role="line"
+         id="tspan4810"
+         style="fill:url(#linearGradient6156);fill-opacity:1;stroke-width:0.264583"
+         x="83.483772"
+         y="35.33284">Login</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 82.314716,75.838909 53.77962,99.438149"
+       id="path6685" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 100.69029,75.030361 127.4896,97.316635"
+       id="path6687" />
+    <rect
+       style="opacity:0.997;fill:none;fill-opacity:0;stroke:#000000;stroke-width:0.236786;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       id="rect6785"
+       width="44.224262"
+       height="53.001106"
+       x="29.015602"
+       y="99.316315" />
+    <rect
+       style="opacity:0.997;fill:none;fill-opacity:0;stroke:#000000;stroke-width:0.236786;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       id="rect6787"
+       width="44.224262"
+       height="53.001106"
+       x="108.58422"
+       y="97.699219" />
+    <text
+       xml:space="preserve"
+       style="font-size:10.5833px;line-height:1.25;font-family:Kinnari;-inkscape-font-specification:Kinnari;word-spacing:0px;stroke-width:0.264583"
+       x="39.120411"
+       y="84.184021"
+       id="text9585"><tspan
+         sodipodi:role="line"
+         id="tspan9583"
+         style="stroke-width:0.264583"
+         x="39.120411"
+         y="84.184021">Owner</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:10.5833px;line-height:1.25;font-family:Kinnari;-inkscape-font-specification:Kinnari;word-spacing:0px;stroke-width:0.264583"
+       x="127.59493"
+       y="85.111259"
+       id="text13681"><tspan
+         sodipodi:role="line"
+         id="tspan13679"
+         style="stroke-width:0.264583"
+         x="127.59493"
+         y="85.111259">Detective</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:10.5833px;line-height:1.25;font-family:Kinnari;-inkscape-font-specification:Kinnari;word-spacing:0px;stroke-width:0.264583"
+       x="33.643047"
+       y="137.47406"
+       id="text19955"><tspan
+         sodipodi:role="line"
+         id="tspan19953"
+         style="stroke-width:0.264583"
+         x="33.643047"
+         y="137.47406">Add Pet</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:10.5833px;line-height:1.25;font-family:Kinnari;-inkscape-font-specification:Kinnari;word-spacing:0px;stroke-width:0.264583"
+       x="38.142731"
+       y="148.19884"
+       id="text27291"><tspan
+         sodipodi:role="line"
+         id="tspan27289"
+         style="stroke-width:0.264583"
+         x="38.142731"
+         y="148.19884">Logout</tspan><tspan
+         sodipodi:role="line"
+         style="stroke-width:0.264583"
+         x="38.142731"
+         y="161.42796"
+         id="tspan29555" /></text>
+    <rect
+       style="opacity:0.997;fill:none;fill-opacity:0;stroke:#000000;stroke-width:0.343958;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       id="rect31705"
+       width="33.249897"
+       height="24.621424"
+       x="36.912846"
+       y="101.85193" />
+    <text
+       xml:space="preserve"
+       style="font-size:6.35px;line-height:0.75;font-family:Kinnari;-inkscape-font-specification:Kinnari;word-spacing:0px;stroke-width:0.429095"
+       x="68.112305"
+       y="79.167099"
+       id="text37077"
+       transform="scale(0.68631458,1.4570578)"><tspan
+         sodipodi:role="line"
+         id="tspan37075"
+         style="font-size:6.35px;stroke-width:0.429095"
+         x="68.112305"
+         y="79.167099">List of pets</tspan></text>
+    <rect
+       style="opacity:0.997;fill:none;fill-opacity:0;stroke:#000000;stroke-width:0.343958;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       id="rect53087"
+       width="40.486965"
+       height="7.874639"
+       x="32.752903"
+       y="91.441673" />
+    <text
+       xml:space="preserve"
+       style="font-size:6.14299px;line-height:1.25;font-family:Kinnari;-inkscape-font-specification:Kinnari;word-spacing:0px;stroke-width:0.153575"
+       x="60.16024"
+       y="57.230659"
+       id="text57391"
+       transform="scale(0.58044178,1.7228257)"><tspan
+         sodipodi:role="line"
+         id="tspan57389"
+         style="stroke-width:0.153575"
+         x="60.16024"
+         y="57.230659">Search box for detectives</tspan><tspan
+         sodipodi:role="line"
+         style="stroke-width:0.153575"
+         x="60.16024"
+         y="64.909393"
+         id="tspan57393" /></text>
+    <rect
+       style="opacity:0.997;fill:none;fill-opacity:0;stroke:#000000;stroke-width:0.343958;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       id="rect60385"
+       width="40.486965"
+       height="7.874639"
+       x="112.32152"
+       y="97.699219" />
+    <text
+       xml:space="preserve"
+       style="font-size:6.14299px;line-height:1.25;font-family:Kinnari;-inkscape-font-specification:Kinnari;word-spacing:0px;stroke-width:0.153575"
+       x="197.2431"
+       y="60.862801"
+       id="text60391"
+       transform="scale(0.58044178,1.7228257)"><tspan
+         sodipodi:role="line"
+         id="tspan60387"
+         style="stroke-width:0.153575"
+         x="197.2431"
+         y="60.862801">Search box for pets</tspan><tspan
+         sodipodi:role="line"
+         style="stroke-width:0.153575"
+         x="197.2431"
+         y="68.541534"
+         id="tspan60389" /></text>
+    <rect
+       style="opacity:0.997;fill:none;fill-opacity:0;stroke:#000000;stroke-width:0.343958;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       id="rect75443"
+       width="39.423801"
+       height="38.110462"
+       x="112.35007"
+       y="109.20341" />
+    <text
+       xml:space="preserve"
+       style="font-size:10.5833px;line-height:1.25;font-family:Kinnari;-inkscape-font-specification:Kinnari;word-spacing:0px;stroke-width:0.264583"
+       x="116.56974"
+       y="119.5877"
+       id="text77713"><tspan
+         sodipodi:role="line"
+         id="tspan77711"
+         style="stroke-width:0.264583"
+         x="116.56974"
+         y="119.5877">List</tspan><tspan
+         sodipodi:role="line"
+         style="stroke-width:0.264583"
+         x="116.56974"
+         y="132.81682"
+         id="tspan77715">Pets</tspan><tspan
+         sodipodi:role="line"
+         style="stroke-width:0.264583"
+         x="116.56974"
+         y="146.04594"
+         id="tspan77717">Area</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:10.5833px;line-height:1.25;font-family:Kinnari;-inkscape-font-specification:Kinnari;word-spacing:0px;stroke-width:0.264583"
+       x="110.14993"
+       y="157.59988"
+       id="text87703"><tspan
+         sodipodi:role="line"
+         id="tspan87699"
+         style="stroke-width:0.264583"
+         x="110.14993"
+         y="157.59988">Logout</tspan><tspan
+         sodipodi:role="line"
+         style="stroke-width:0.264583"
+         x="110.14993"
+         y="170.82901"
+         id="tspan87701" /></text>
+    <rect
+       style="opacity:0.997;fill:none;fill-opacity:0;stroke:#000000;stroke-width:0.343958;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       id="rect87727"
+       width="26.254486"
+       height="33.752022"
+       x="168.28699"
+       y="104.71792" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.54989px;line-height:1.25;font-family:Kinnari;-inkscape-font-specification:Kinnari;word-spacing:0px;stroke-width:0.213276"
+       x="226.40918"
+       y="83.938553"
+       id="text92097"
+       transform="scale(0.74972079,1.3338299)"><tspan
+         sodipodi:role="line"
+         id="tspan92095"
+         style="font-size:4.54989px;stroke-width:0.213276"
+         x="226.40918"
+         y="83.938553">Do you </tspan><tspan
+         sodipodi:role="line"
+         style="font-size:4.54989px;stroke-width:0.213276"
+         x="226.40918"
+         y="89.625916"
+         id="tspan106107">want to </tspan><tspan
+         sodipodi:role="line"
+         style="font-size:4.54989px;stroke-width:0.213276"
+         x="226.40918"
+         y="95.313278"
+         id="tspan106109">add your </tspan><tspan
+         sodipodi:role="line"
+         style="font-size:4.54989px;stroke-width:0.213276"
+         x="226.40918"
+         y="101.00064"
+         id="tspan106111">current location</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52778px;line-height:1.25;font-family:Kinnari;-inkscape-font-specification:Kinnari;word-spacing:0px;fill:url(#linearGradient125352);fill-opacity:1;stroke-width:0.264583"
+       x="166.31372"
+       y="100.58047"
+       id="text115093"><tspan
+         sodipodi:role="line"
+         id="tspan115091"
+         style="font-size:3.52778px;fill:url(#linearGradient125352);fill-opacity:1;stroke-width:0.264583"
+         x="166.31372"
+         y="100.58047">If there is no location set</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 148.40021,139.9984 45.93565,17.78868"
+       id="path125393" />
+    <text
+       xml:space="preserve"
+       style="font-size:10.5833px;line-height:1.25;font-family:Kinnari;-inkscape-font-specification:Kinnari;word-spacing:0px;stroke-width:0.264583"
+       x="188.78116"
+       y="148.36246"
+       id="text128167"><tspan
+         sodipodi:role="line"
+         id="tspan128165"
+         style="stroke-width:0.264583"
+         x="188.78116"
+         y="148.36246">Item clicked</tspan></text>
+    <rect
+       style="opacity:0.997;fill:none;fill-opacity:0;stroke:#000000;stroke-width:0.343958;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       id="rect135355"
+       width="55.148373"
+       height="66.081535"
+       x="193.13785"
+       y="149.9077" />
+    <text
+       xml:space="preserve"
+       style="font-size:10.5833px;line-height:1.25;font-family:Kinnari;-inkscape-font-specification:Kinnari;word-spacing:0px;stroke-width:0.264583"
+       x="198.37993"
+       y="171.76143"
+       id="text139065"><tspan
+         sodipodi:role="line"
+         id="tspan139063"
+         style="stroke-width:0.264583"
+         x="198.37993"
+         y="171.76143">Pet Detail</tspan><tspan
+         sodipodi:role="line"
+         style="stroke-width:0.264583"
+         x="198.37993"
+         y="184.99055"
+         id="tspan139067" /></text>
+  </g>
+</svg>
