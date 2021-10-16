@@ -64,7 +64,11 @@ class Pet with ChangeNotifier {
     var _res = await request.send();
     //String _response = json.decode(_res.body);
     print(_res.statusCode);
-    return false;
+    if(_res.statusCode == 201) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   Future<Map<String, String>> _getHeaders() async {

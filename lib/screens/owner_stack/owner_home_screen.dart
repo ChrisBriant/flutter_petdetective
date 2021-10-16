@@ -22,7 +22,7 @@ class OwnerHomeScreen extends StatelessWidget {
         children: [
           Text('You are an owner'),
           ElevatedButton(
-            onPressed: () => Navigator.of(context).pushReplacementNamed(AddPetScreen.routeName), 
+            onPressed: () => Navigator.of(context).pushNamed(AddPetScreen.routeName), 
             child: Text('Add Pet')
           ),
           Center(

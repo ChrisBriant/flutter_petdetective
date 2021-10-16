@@ -1,6 +1,9 @@
 
+import 'dart:convert';
 import 'package:location/location.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class LocationProvider with ChangeNotifier{
   Location _location = new Location();
@@ -75,6 +78,34 @@ class LocationProvider with ChangeNotifier{
 
   bool get loaded {
     return _locationLoaded;
+  }
+
+  Future<bool> get isLocationSet async {
+    final _prefs = await SharedPreferences.getInstance();
+    
+
+    print('Getting Location Set');
+    if(_prefs.containsKey('locationData')) {
+      print('exists');
+      //Map<String,dynamic> _locationData = json.decode(_prefs.get('locationData') as String);
+      //_prefs.remove('locationData');
+      return true;
+    }
+    return false;
+  } 
+
+  Future<void> setMyLocation(lat,lng) async {
+    final _prefs = await SharedPreferences.getInstance();
+    
+    final _newLocationData = json.encode(
+      {
+        'lat' : lat,
+        'lng' : lng
+      }
+    );
+    print('Setting Location');
+    _prefs.setString('locationData', _newLocationData);
+ 
   }
 
 }

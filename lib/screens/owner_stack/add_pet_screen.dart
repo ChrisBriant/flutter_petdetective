@@ -26,7 +26,7 @@ class AddPetScreen extends StatelessWidget {
         print('Form is valid');
         _formKey.currentState!.save();
         try {
-          _form.addPet(
+          bool _success = await _form.addPet(
             _form.getFormValue('name'), 
             _form.getFormValue('animal'), 
             _form.getFormValue('description'), 
@@ -37,6 +37,11 @@ class AddPetScreen extends StatelessWidget {
             // _form.getFormValue('lat'), 
             // _form.getFormValue('lng')
           );
+          print('Did it work');
+          print(_success);
+          if(_success) {
+            Navigator.of(context).pop();
+          }
         } catch(err) {
           print(err);
         }
@@ -69,8 +74,10 @@ class AddPetScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 SizedBox(
-                                  height: 20,
+                                  height: 40,
                                 ),
+                                Text('Pet Portrait', style: TextStyle(fontSize: 20),),
+                                ImageSelect(false,_form.addToForm),
                                 TextFormField(
                                   decoration: InputDecoration(labelText: 'Name'),
                                   keyboardType: TextInputType.text,
@@ -99,15 +106,30 @@ class AddPetScreen extends StatelessWidget {
                                   onSaved: (value) { _form.addToForm('lastSeen', value); },
                                   onTap: () {},
                                 ),
+                                SizedBox(
+                                  height: 20,
+                                ),
                                 ElevatedButton.icon(
                                   onPressed: () => Navigator.of(context).pushNamed(MapScreen.routeName), 
                                   icon: Icon(Icons.location_pin), 
                                   label: Text('Add Location')
                                 ),
+                                _locationProvider.lat == null || _locationProvider.lng == null 
+                                ? Row(children: [
+                                    Icon(Icons.error),
+                                    Text('No location selected, click below to select the location from the map where your pet was last seen.')
+                                  ],
+                                )
+                                : Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Icon(Icons.check, color: Colors.green,),
+                                    Text('Location Added')
+                                  ],
+                                ),
                                 SizedBox(
                                   height: 20,
                                 ),
-                                ImageSelect(false,_form.addToForm),
                                 ElevatedButton(
                                   //onPressed: _saveForm, 
                                   onPressed: _locationProvider.lat == null || _locationProvider.lng == null ? null : _saveForm,
