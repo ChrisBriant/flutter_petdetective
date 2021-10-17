@@ -10,7 +10,8 @@ import 'package:http/http.dart' as http;
 //import '../models/http_exception.dart';
 
 class Pet with ChangeNotifier {
-  static const String BASEURL = 'https://petdetectivebackend.chrisbriant.uk/api'; 
+  static const String BASEURL = 'https://petdetectivebackend.chrisbriant.uk/api';
+  static const String MEDIAURL = 'https://petdetectivebackend.chrisbriant.uk';  
 
   Map<String,dynamic> _formData = {};
 
@@ -81,5 +82,63 @@ class Pet with ChangeNotifier {
       throw Exception('Failed to retrieve headers.');
     }
   }
+
+  Future<List<MissingPet>> getMissingPets({String? lat,String? lng, int? distance}) async {
+    //http://127.0.0.1:8000/api/pets/petsnearme?lat=52.394800&lng=-2.003761&dist=2
+    distance == null ? distance = 2 : distance = distance;
+    if(lat == null || lng == null) {
+      final _prefs = await SharedPreferences.getInstance();
+      Map<String,dynamic> _locationData = json.decode(_prefs.get('locationData') as String);
+      lat = _locationData['lat'].toString();
+      lng = _locationData['lng'].toString();
+    }
+    
+    final url = Uri.parse('$BASEURL/pets/petsnearme?lat=$lat&lng=$lng&dist=$distance');
+    final res = await http.get(url);
+    print('Pet List');
+    print(res.statusCode);
+    if(res.statusCode == 200) {
+      final responseData = json.decode(res.body);
+      print(responseData);
+      List<MissingPet> _pets = [];
+      for(var item in responseData) {
+        _pets.add(MissingPet(
+                  name: item['name'],
+                  animal: item['animal'],
+                  id: item['id'],
+                  description: item['description'],
+                  lastSeen: item['last_seen'],
+                  lat: item['lat'],
+                  lng: item['lng'],
+                  imgUrl: MEDIAURL + item['picture']   
+                ));
+      }
+      return _pets;
+    }
+    return [];
+  }
+
+}
+
+class MissingPet {
+    int id;
+    String name;
+    String description;
+    String lastSeen;
+    String animal;
+    double? lat; 
+    double? lng;
+    String imgUrl;
+
+    MissingPet({
+      required this.id,
+      required this.name,
+      required this.description,
+      required this.lastSeen,
+      required this.animal,
+      required this.lat,
+      required this.lng,
+      required this.imgUrl
+    });
 
 }

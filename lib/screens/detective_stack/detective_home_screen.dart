@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:petdetective/screens/owner_stack/add_pet_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/auth.dart';
 import '../../providers/location_provider.dart';
+import '../../providers/pet.dart';
 //import '../wait_screen.dart';
 import '../owner_stack/add_pet_screen.dart';
 import '../wait_screen.dart';
@@ -16,6 +16,7 @@ class DetectiveHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _locationProvider = Provider.of<LocationProvider>(context, listen: false);
+    final _petProvider = Provider.of<Pet>(context, listen: false);
 
     _checkLocation() async {
       bool _isLocationSet = await _locationProvider.isLocationSet;
@@ -37,28 +38,58 @@ class DetectiveHomeScreen extends StatelessWidget {
         future: _locationProvider.isLocationSet,
         builder: (ctx,locationSet) =>  locationSet.connectionState == ConnectionState.waiting
         ? WaitScreen()
-        : Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('You are a detective'),
-                ElevatedButton(
-                  onPressed: () => Navigator.of(context).pushReplacementNamed(AddPetScreen.routeName), 
-                  child: Text('Add Pet')
+        : SingleChildScrollView(
+          child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('You are a detective'),
+                    FutureBuilder<List<MissingPet>>(
+                      future: _petProvider.getMissingPets(),
+                      builder: (ctx, pets) => pets.connectionState == ConnectionState.waiting
+                      ? Container(
+                        height: 100,
+                        width: 100,
+                        child:Text('waiting')
+                      )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: pets.data!.length,
+                          itemBuilder: (ctx,i) => ListTile(
+                            key: ValueKey(pets.data![i].id),
+                            leading: Container(
+                              width: 100,
+                              height: 100,
+                              //child: Text('hello'),
+                              child: Padding(
+                                padding: EdgeInsets.all(5),
+                                child: CircleAvatar(backgroundImage: NetworkImage(pets.data![i].imgUrl),)
+                              )
+                            ),
+                            title: Text(
+                              pets.data![i].name
+                            ),
+                            subtitle: Text(
+                              pets.data![i].description
+                            ),
+                          ) 
+        
+                          //Text(pets.data![i].id.toString()),
+                        ),
+                    ),
+                    Center(
+                      child: Text('You are Autneticated!',
+                        style: TextStyle(fontSize: 25),
+                      ),
+                    ),
+                    SizedBox(height: 10,),
+                    ElevatedButton(
+                      onPressed: () { Provider.of<Auth>(context, listen: false).signout(); }, 
+                      child: Text('Log Out', style: TextStyle(fontSize: 20),))
+                  ]
                 ),
-                Center(
-                  child: Text('You are Autneticated!',
-                    style: TextStyle(fontSize: 25),
-                  ),
-                ),
-                SizedBox(height: 10,),
-                ElevatedButton(
-                  onPressed: () { Provider.of<Auth>(context, listen: false).signout(); }, 
-                  child: Text('Log Out', style: TextStyle(fontSize: 20),))
-              ]
-            )
-      ),
-      
+        ),
+      )
     );
   }
 }
