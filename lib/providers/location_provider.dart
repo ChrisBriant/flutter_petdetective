@@ -87,7 +87,8 @@ class LocationProvider with ChangeNotifier{
     print('Getting Location Set');
     if(_prefs.containsKey('locationData')) {
       print('exists');
-      //Map<String,dynamic> _locationData = json.decode(_prefs.get('locationData') as String);
+      Map<String,dynamic> _locationData = json.decode(_prefs.get('locationData') as String);
+      print(_prefs.get('locationData'));
       //_prefs.remove('locationData');
       return true;
     }

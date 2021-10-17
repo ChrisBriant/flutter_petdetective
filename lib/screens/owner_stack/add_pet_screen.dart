@@ -115,9 +115,11 @@ class AddPetScreen extends StatelessWidget {
                                   label: Text('Add Location')
                                 ),
                                 _locationProvider.lat == null || _locationProvider.lng == null 
-                                ? Row(children: [
+                                ? Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
                                     Icon(Icons.error),
-                                    Text('No location selected, click below to select the location from the map where your pet was last seen.')
+                                    Flexible(child: Text('No location selected, click below to select the location from the map where your pet was last seen.'))
                                   ],
                                 )
                                 : Row(

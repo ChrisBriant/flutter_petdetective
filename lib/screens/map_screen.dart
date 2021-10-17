@@ -7,12 +7,34 @@ import '../providers/location_provider.dart';
 
 class MapScreen extends StatelessWidget {
   static String routeName = '/mapscreen';
+  
 
 
   @override
   Widget build(BuildContext context) {
     final _locationProvider = Provider.of<LocationProvider>(context, listen: true);
+    final Map<String,String>? args = ModalRoute.of(context)!.settings.arguments as Map<String,String>?;
+    String? _sendLocationTo = '';
+    String? _buttonText = '';
+    if(args != null) {
+      _sendLocationTo = args['sendLocationDataTo'];
+    } else {
+      _sendLocationTo = 'form';
+    }
     double _distFromBottom = MediaQuery.of(context).size.height * 0.10;
+
+    //PROBABLY NOT NEEDED
+    //switch (_sendLocationTo) {
+    //   case 'form':
+    //     _buttonText = 'Set Location';
+    //     break;
+    //   case 'form':
+    //     _buttonText = 'Set Location';
+    //     break;
+    //   default:
+    //     //_buttonText = 'Set Location';
+    //     break;
+    // }
 
 
     return FutureBuilder(
@@ -25,7 +47,21 @@ class MapScreen extends StatelessWidget {
                   options: MapOptions(
                     center: latLng.LatLng(_locationProvider.lat!, _locationProvider.lng!),
                     zoom: 13.0,
-                    onTap: (pos,latLng) { _locationProvider.setLocationData(latLng.latitude, latLng.longitude);}
+                    onTap: (pos,latLng) { 
+                      //_locationProvider.setLocationData(latLng.latitude, latLng.longitude);
+                      switch (_sendLocationTo) {
+                        case 'form':
+                          _locationProvider.setLocationData(latLng.latitude, latLng.longitude);
+                          break;
+                        case 'prefs':
+                          _locationProvider.setLocationData(latLng.latitude, latLng.longitude);
+                          _locationProvider.setMyLocation(latLng.latitude, latLng.longitude);
+                          break;
+                        default:
+                          _locationProvider.setLocationData(latLng.latitude, latLng.longitude);
+                      }
+                      
+                    }
                   ),
                   layers: [
                     TileLayerOptions(

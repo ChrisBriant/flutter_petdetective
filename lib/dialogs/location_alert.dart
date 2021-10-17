@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:petdetective/screens/map_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/location_provider.dart';
@@ -27,7 +28,11 @@ class LocationAlert extends StatelessWidget {
           child: Text('Keep this Location')
         ),
         ElevatedButton(
-          onPressed: () {}, 
+          //Deal with below
+          onPressed: () { 
+            Navigator.of(context).pop();
+            Navigator.of(context).pushNamed(MapScreen.routeName,arguments: {'sendLocationDataTo': 'prefs'}); 
+          }, 
           child: Text('Select on Map')
         )
       ],
