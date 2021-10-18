@@ -11,7 +11,8 @@ import 'package:http/http.dart' as http;
 
 class Pet with ChangeNotifier {
   static const String BASEURL = 'https://petdetectivebackend.chrisbriant.uk/api';
-  static const String MEDIAURL = 'https://petdetectivebackend.chrisbriant.uk';  
+  static const String MEDIAURL = 'https://petdetectivebackend.chrisbriant.uk';
+  List<MissingPet> pets = [];  
 
   Map<String,dynamic> _formData = {};
 
@@ -95,14 +96,10 @@ class Pet with ChangeNotifier {
     
     final url = Uri.parse('$BASEURL/pets/petsnearme?lat=$lat&lng=$lng&dist=$distance');
     final res = await http.get(url);
-    print('Pet List');
-    print(res.statusCode);
     if(res.statusCode == 200) {
       final responseData = json.decode(res.body);
-      print(responseData);
-      List<MissingPet> _pets = [];
       for(var item in responseData) {
-        _pets.add(MissingPet(
+        pets.add(MissingPet(
                   name: item['name'],
                   animal: item['animal'],
                   id: item['id'],
@@ -113,9 +110,13 @@ class Pet with ChangeNotifier {
                   imgUrl: MEDIAURL + item['picture']   
                 ));
       }
-      return _pets;
+      return pets;
     }
     return [];
+  }
+
+  MissingPet getPet(petId) {
+    return pets.firstWhere((e) => e.id == petId );
   }
 
 }

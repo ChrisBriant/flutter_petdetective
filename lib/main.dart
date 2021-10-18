@@ -12,6 +12,7 @@ import 'screens/detective_stack/detective_home_screen.dart';
 import '../screens/signup_completed_screen.dart';
 import 'screens/owner_stack/add_pet_screen.dart';
 import '../screens/map_screen.dart';
+import '../screens/pet_screen.dart';
 import '../screens/detective_stack/detective_home_screen.dart';
 import '../screens/owner_stack/owner_home_screen.dart';
 
@@ -58,6 +59,9 @@ class PetDetective extends StatelessWidget {
                 textStyle: TextStyle(fontSize: 20),
               )
             ),
+            textTheme: TextTheme(
+              bodyText1: TextStyle(fontSize: 22),
+            ),
             // textTheme: TextTheme(
             // ),
             primarySwatch: Colors.pink
@@ -80,10 +84,10 @@ class PetDetective extends StatelessWidget {
             SigninScreen.routeName : (ctx) => SigninScreen(),
             RegisterScreen.routeName : (ctx) => RegisterScreen(),
             SignupCompleteScreen.routeName : (ctx) => SignupCompleteScreen(),
-            //AuthedHomeScreen.routeName : (ctx) => AuthedHomeScreen(),
             OwnerHomeScreen.routeName : (ctx) => OwnerHomeScreen(),
             DetectiveHomeScreen.routeName : (ctx) => DetectiveHomeScreen(),
             AddPetScreen.routeName : (ctx) => AddPetScreen(),
+            PetScreen.routeName : (ctx) => PetScreen(),
             MapScreen.routeName: (ctx) => MapScreen(),
           },
         ),

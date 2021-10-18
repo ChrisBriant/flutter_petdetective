@@ -15,7 +15,7 @@ class MapScreen extends StatelessWidget {
     final _locationProvider = Provider.of<LocationProvider>(context, listen: true);
     final Map<String,String>? args = ModalRoute.of(context)!.settings.arguments as Map<String,String>?;
     String? _sendLocationTo = '';
-    String? _buttonText = '';
+    //String? _buttonText = '';
     if(args != null) {
       _sendLocationTo = args['sendLocationDataTo'];
     } else {

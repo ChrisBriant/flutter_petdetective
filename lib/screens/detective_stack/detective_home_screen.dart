@@ -4,10 +4,8 @@ import 'package:provider/provider.dart';
 import '../../providers/auth.dart';
 import '../../providers/location_provider.dart';
 import '../../providers/pet.dart';
-//import '../wait_screen.dart';
-import '../owner_stack/add_pet_screen.dart';
-import '../wait_screen.dart';
 import '../../dialogs/location_alert.dart';
+import '../../screens/pet_screen.dart';
 
 class DetectiveHomeScreen extends StatelessWidget {
   static final routeName = '/homedetective';
@@ -37,7 +35,7 @@ class DetectiveHomeScreen extends StatelessWidget {
       body: FutureBuilder(
         future: _locationProvider.isLocationSet,
         builder: (ctx,locationSet) =>  locationSet.connectionState == ConnectionState.waiting
-        ? WaitScreen()
+        ? CircularProgressIndicator()
         : SingleChildScrollView(
           child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -53,6 +51,7 @@ class DetectiveHomeScreen extends StatelessWidget {
                         child:Text('waiting')
                       )
                       : ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: pets.data!.length,
                           itemBuilder: (ctx,i) => ListTile(
@@ -72,6 +71,7 @@ class DetectiveHomeScreen extends StatelessWidget {
                             subtitle: Text(
                               pets.data![i].description
                             ),
+                            onTap: () {Navigator.of(context).pushNamed(PetScreen.routeName, arguments: {'petId':pets.data![i].id });},
                           ) 
         
                           //Text(pets.data![i].id.toString()),
