@@ -15,6 +15,7 @@ import '../screens/map_screen.dart';
 import '../screens/pet_screen.dart';
 import '../screens/detective_stack/detective_home_screen.dart';
 import '../screens/owner_stack/owner_home_screen.dart';
+import '../screens/pet_person_map_screen.dart';
 
 void main() {
   runApp(PetDetective());
@@ -89,6 +90,7 @@ class PetDetective extends StatelessWidget {
             AddPetScreen.routeName : (ctx) => AddPetScreen(),
             PetScreen.routeName : (ctx) => PetScreen(),
             MapScreen.routeName: (ctx) => MapScreen(),
+            PetPersonMapScreen.routeName: (ctx) => PetPersonMapScreen(),
           },
         ),
       ),

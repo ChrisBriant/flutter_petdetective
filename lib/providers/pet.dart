@@ -99,14 +99,18 @@ class Pet with ChangeNotifier {
     if(res.statusCode == 200) {
       final responseData = json.decode(res.body);
       for(var item in responseData) {
+        //Get the missing location of the pet
+        List<dynamic> _locations = item['locations'];
+        dynamic _missingLocation = _locations.firstWhere((element) => element['location_type'] == 'Missing Location');
+        print(_missingLocation);
         pets.add(MissingPet(
                   name: item['name'],
                   animal: item['animal'],
                   id: item['id'],
                   description: item['description'],
                   lastSeen: item['last_seen'],
-                  lat: item['lat'],
-                  lng: item['lng'],
+                  lat: _missingLocation['lat'],
+                  lng: _missingLocation['lng'],
                   imgUrl: MEDIAURL + item['picture']   
                 ));
       }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:petdetective/screens/pet_person_map_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/pet.dart';
@@ -54,7 +55,7 @@ class PetScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical:10,horizontal:20),
                   child: ElevatedButton(
-                    onPressed: () {}, 
+                    onPressed: () {Navigator.of(context).pushNamed(PetPersonMapScreen.routeName,arguments: {'mode':'single-pet', 'petId' : _pet.id});}, 
                     child: Text('View on Map')),
                 )
               ],),
