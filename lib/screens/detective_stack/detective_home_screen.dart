@@ -74,7 +74,13 @@ class DetectiveHomeScreen extends StatelessWidget {
                             subtitle: Text(
                               pets.data![i].description
                             ),
-                            onTap: () {Navigator.of(context).pushNamed(PetScreen.routeName, arguments: {'petId':pets.data![i].id });},
+                            onTap: () {
+                                Navigator.of(context).pushNamed(
+                                  PetScreen.routeName, arguments: {
+                                    'petId':pets.data![i].id,
+                                    'isDetective' : true 
+                                  });
+                            },
                           ) 
         
                           //Text(pets.data![i].id.toString()),

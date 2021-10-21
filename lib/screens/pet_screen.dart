@@ -15,9 +15,10 @@ class PetScreen extends StatelessWidget {
     final _petProvider = Provider.of<Pet>(context, listen: false);
     final _caseProvider = Provider.of<CaseProvider>(context, listen: true);
     final _auth = Provider.of<Auth>(context, listen: false);
-    final Map<String,int>? args = ModalRoute.of(context)!.settings.arguments as Map<String,int>?;
+    final Map<String,dynamic>? args = ModalRoute.of(context)!.settings.arguments as Map<String,dynamic>?;
 
-    final MissingPet _pet = _petProvider.getPet(args!['petId']); 
+    final MissingPet _pet = _petProvider.getPet(args!['petId']);
+    final bool _isDetective = args['isDetective'];
     
 
     // if(args != null) {
@@ -77,14 +78,25 @@ class PetScreen extends StatelessWidget {
                     onPressed: () {Navigator.of(context).pushNamed(PetPersonMapScreen.routeName,arguments: {'mode':'single-pet', 'petId' : _pet.id});}, 
                     child: Text('View on Map')),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical:10,horizontal:20),
-                  child: ElevatedButton(
-                    onPressed: _pet.isCaseOpen || _pet.requestsIds.contains(_auth.id) || _caseProvider.getPetRequests.contains(_pet.id)
-                    ? null 
-                    : _requestCase, 
-                    child: Text('Request Case')),
+                _isDetective 
+                ? FutureBuilder<int>(
+                  future: _auth.id,  
+                  builder: (ctx,userId) => userId.connectionState == ConnectionState.waiting
+                  ? CircularProgressIndicator()
+                  : Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical:10,horizontal:20),
+                          child: ElevatedButton(
+                            onPressed: _pet.isCaseOpen || _pet.requestsIds.contains(userId.data) || _caseProvider.getPetRequests.contains(_pet.id)
+                            ? null 
+                            : _requestCase, 
+                            child: Text('Request Case')),
+                        ),
+                      ]
+                    ),
                 )
+                : Column(children: [],)
               ],),
             )
           ],

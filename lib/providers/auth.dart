@@ -194,17 +194,17 @@ class Auth with ChangeNotifier {
     return false;
   }
 
-  // Future<int> get id async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   if(prefs.containsKey('userData')) {
-  //     Map<String,dynamic> _userData = json.decode(prefs.get('userData') as String);
-  //     return _userData['id'];
-  //   }
-  //   throw Exception('Unable to retrieve user data.');
-  // }
-
-  int get id {
-    return userId;
+  Future<int> get id async {
+    final prefs = await SharedPreferences.getInstance();
+    if(prefs.containsKey('userData')) {
+      Map<String,dynamic> _userData = json.decode(prefs.get('userData') as String);
+      return _userData['id'];
+    }
+    throw Exception('Unable to retrieve user data.');
   }
+
+  // int get id {
+  //   return userId;
+  // }
 
 }

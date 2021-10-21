@@ -7,9 +7,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
+import '../providers/api_provider.dart';
+
 //import '../models/http_exception.dart';
 
-class Pet with ChangeNotifier {
+class Pet extends ApiProvider with ChangeNotifier {
   static const String BASEURL = 'https://petdetectivebackend.chrisbriant.uk/api';
   static const String MEDIAURL = 'https://petdetectivebackend.chrisbriant.uk';
   List<MissingPet> pets = [];  
@@ -73,6 +75,28 @@ class Pet with ChangeNotifier {
     }
   }
 
+  void _addPets(responseData) {
+    for(var item in responseData) {
+      //Get the missing location of the pet
+      List<dynamic> _locations = item['locations'];
+      dynamic _missingLocation = _locations.firstWhere((element) => element['location_type'] == 'Missing Location');
+      List<dynamic> _requestsIds = json.decode(item['requests_detective_id']);
+      print(_missingLocation);
+      pets.add(MissingPet(
+        name: item['name'],
+        animal: item['animal'],
+        id: item['id'],
+        description: item['description'],
+        lastSeen: item['last_seen'],
+        lat: _missingLocation['lat'],
+        lng: _missingLocation['lng'],
+        imgUrl: MEDIAURL + item['picture'],
+        requestsIds: _requestsIds.cast<int>(),
+        isCaseOpen: item['is_case_open']   
+      ));
+    }
+  }
+
   Future<Map<String, String>> _getHeaders() async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -85,6 +109,7 @@ class Pet with ChangeNotifier {
   }
 
   Future<List<MissingPet>> getMissingPets({String? lat,String? lng, int? distance}) async {
+    pets.clear();
     //http://127.0.0.1:8000/api/pets/petsnearme?lat=52.394800&lng=-2.003761&dist=2
     distance == null ? distance = 2 : distance = distance;
     if(lat == null || lng == null) {
@@ -125,6 +150,27 @@ class Pet with ChangeNotifier {
       return pets;
     }
     return [];
+  }
+
+  Future<List<MissingPet>> getMyPets({String? lat,String? lng, int? distance}) async {
+    pets.clear();
+    Map<String,String> _headers;
+    try {
+      _headers = await getHeadersJsonWithAuth();
+      print(_headers);
+    } catch(err) {
+      print(err);
+      return [];
+    }
+
+    var res = await http.get(
+      Uri.parse('$BASEURL/pets/mypets/'),
+      headers: _headers
+    );
+    if(res.statusCode == 200) {
+      _addPets(json.decode(res.body));
+    }
+    return pets;
   }
 
   MissingPet getPet(petId) {
