@@ -5,6 +5,7 @@ import '../screens/signin_screen.dart';
 import './providers/auth.dart';
 import './providers/pet.dart';
 import './providers/location_provider.dart';
+import './providers/case_provider.dart';
 import '../screens/home_screen.dart';
 import '../screens/wait_screen.dart';
 import '../screens/register_screen.dart';
@@ -47,6 +48,9 @@ class PetDetective extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (ctx) => LocationProvider()
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => CaseProvider([])
         )
       ],
       child: Consumer<Auth>(

@@ -41,14 +41,17 @@ class DetectiveHomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('You are a detective'),
+                    Text(
+                      'Pets Located Near You',
+                      style: Theme.of(context).textTheme.bodyText1!.merge(TextStyle(fontWeight: FontWeight.bold, fontSize: 26))
+                    ),
                     FutureBuilder<List<MissingPet>>(
                       future: _petProvider.getMissingPets(),
                       builder: (ctx, pets) => pets.connectionState == ConnectionState.waiting
                       ? Container(
                         height: 100,
                         width: 100,
-                        child:Text('waiting')
+                        child:CircularProgressIndicator()
                       )
                       : ListView.builder(
                           physics: NeverScrollableScrollPhysics(),
@@ -76,11 +79,6 @@ class DetectiveHomeScreen extends StatelessWidget {
         
                           //Text(pets.data![i].id.toString()),
                         ),
-                    ),
-                    Center(
-                      child: Text('You are Autneticated!',
-                        style: TextStyle(fontSize: 25),
-                      ),
                     ),
                     SizedBox(height: 10,),
                     ElevatedButton(

@@ -89,6 +89,9 @@ class Pet with ChangeNotifier {
     distance == null ? distance = 2 : distance = distance;
     if(lat == null || lng == null) {
       final _prefs = await SharedPreferences.getInstance();
+      if(!_prefs.containsKey('locationData')) {
+        return [];
+      }
       Map<String,dynamic> _locationData = json.decode(_prefs.get('locationData') as String);
       lat = _locationData['lat'].toString();
       lng = _locationData['lng'].toString();
@@ -102,6 +105,9 @@ class Pet with ChangeNotifier {
         //Get the missing location of the pet
         List<dynamic> _locations = item['locations'];
         dynamic _missingLocation = _locations.firstWhere((element) => element['location_type'] == 'Missing Location');
+        List<dynamic> _requestsIds = json.decode(item['requests_detective_id']);
+        //List<String> _requestsIdsStr = item['requests_detective_id'];
+        //List<int> _requestsIds = _requestsIdsStr.map(int.parse).toList();
         print(_missingLocation);
         pets.add(MissingPet(
                   name: item['name'],
@@ -111,7 +117,9 @@ class Pet with ChangeNotifier {
                   lastSeen: item['last_seen'],
                   lat: _missingLocation['lat'],
                   lng: _missingLocation['lng'],
-                  imgUrl: MEDIAURL + item['picture']   
+                  imgUrl: MEDIAURL + item['picture'],
+                  requestsIds: _requestsIds.cast<int>(),
+                  isCaseOpen: item['is_case_open']   
                 ));
       }
       return pets;
@@ -134,6 +142,8 @@ class MissingPet {
     double? lat; 
     double? lng;
     String imgUrl;
+    List<int> requestsIds;
+    bool isCaseOpen;
 
     MissingPet({
       required this.id,
@@ -143,7 +153,9 @@ class MissingPet {
       required this.animal,
       required this.lat,
       required this.lng,
-      required this.imgUrl
+      required this.imgUrl,
+      required this.requestsIds,
+      required this.isCaseOpen
     });
 
 }

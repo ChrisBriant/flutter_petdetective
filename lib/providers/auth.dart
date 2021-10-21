@@ -13,9 +13,11 @@ class Auth with ChangeNotifier {
   static const String BASEURL = 'https://petdetectivebackend.chrisbriant.uk/api'; 
 
   Map<String,dynamic> _formData = {};
+  int userId;
 
   Auth(
-    this._formData
+    this._formData,
+    [this.userId = 0]
   );
 
   addToForm(String key,dynamic val) {
@@ -38,12 +40,17 @@ class Auth with ChangeNotifier {
     _justSignedUp = false;
   }
 
-  static Future<void> _setToken(token,refresh,expiryDate,isDetective) async {
+  void _setSessionData(id) {
+    userId = id;
+  }
+
+  static Future<void> _setToken(token,refresh,expiryDate,isDetective,id) async {
     final userData = json.encode({
       'token' : token,
       'refresh' : refresh,
       'expiryDate' : expiryDate!.toIso8601String(),
-      'isDetective' : isDetective
+      'isDetective' : isDetective,
+      'id' : id
     });
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('userData', userData);
@@ -71,7 +78,9 @@ class Auth with ChangeNotifier {
           String refresh = responseData['refresh'];
           DateTime? expiryDate = Jwt.getExpiryDate(token);
           Map<String, dynamic> payload = Jwt.parseJwt(token);
-          await _setToken(token, refresh, expiryDate, payload['is_detective']);
+          //TODO - Get the user ID from the payload and store
+          await _setToken(token, refresh, expiryDate, payload['is_detective'],payload['user_id']);
+          _setSessionData(payload['user_id']);
           notifyListeners();
         } else {
           throw HttpException('Something went wrong tying to log on.');
@@ -92,6 +101,10 @@ class Auth with ChangeNotifier {
 
     final extractedUserData = json.decode(prefs.getString('userData')!) as Map<String, dynamic>;
     final DateTime expiryDate = DateTime.parse(extractedUserData['expiryDate'] as String);
+    print(extractedUserData);
+    //Two lines of code below need testing
+    final int id = extractedUserData['id'] as int;
+    final bool isDetective = extractedUserData['isDetective'] as bool;
     final String refresh = extractedUserData['refresh'] as String; 
     if(expiryDate.isBefore(DateTime.now())) {
       //Try refresh token
@@ -107,7 +120,8 @@ class Auth with ChangeNotifier {
         final responseData = json.decode(res.body);
         if(responseData['access'] != null) {
           //set the access token
-          await _setToken(responseData['access'], refresh, expiryDate,false);
+          await _setToken(responseData['access'], refresh, expiryDate,isDetective,id);
+          _setSessionData(id);
           return true;
         } else {
           return false;
@@ -180,6 +194,17 @@ class Auth with ChangeNotifier {
     return false;
   }
 
+  // Future<int> get id async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   if(prefs.containsKey('userData')) {
+  //     Map<String,dynamic> _userData = json.decode(prefs.get('userData') as String);
+  //     return _userData['id'];
+  //   }
+  //   throw Exception('Unable to retrieve user data.');
+  // }
 
+  int get id {
+    return userId;
+  }
 
 }

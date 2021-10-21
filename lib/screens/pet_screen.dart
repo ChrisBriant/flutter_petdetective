@@ -3,6 +3,9 @@ import 'package:petdetective/screens/pet_person_map_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/pet.dart';
+import '../providers/auth.dart';
+import '../providers/case_provider.dart';
+import '../dialogs/request_dialog.dart';
 
 class PetScreen extends StatelessWidget {
   static final routeName = '/petscreen';
@@ -10,9 +13,12 @@ class PetScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _petProvider = Provider.of<Pet>(context, listen: false);
+    final _caseProvider = Provider.of<CaseProvider>(context, listen: true);
+    final _auth = Provider.of<Auth>(context, listen: false);
     final Map<String,int>? args = ModalRoute.of(context)!.settings.arguments as Map<String,int>?;
 
     final MissingPet _pet = _petProvider.getPet(args!['petId']); 
+    
 
     // if(args != null) {
     //   _sendLocationTo = args['sendLocationDataTo'];
@@ -20,7 +26,20 @@ class PetScreen extends StatelessWidget {
     //   _sendLocationTo = 'form';
     // }
 
+    _requestCase() {
+      showDialog(
+        context: context, 
+        builder: (ctx) => RequestDialog(_pet.id)
+      );
+    }
+
+    print('User Id');
+    print(_auth.id);
+    print(_pet.isCaseOpen);
+    print(_pet.requestsIds);
+
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(_pet.name),
       ),
@@ -57,6 +76,14 @@ class PetScreen extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {Navigator.of(context).pushNamed(PetPersonMapScreen.routeName,arguments: {'mode':'single-pet', 'petId' : _pet.id});}, 
                     child: Text('View on Map')),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical:10,horizontal:20),
+                  child: ElevatedButton(
+                    onPressed: _pet.isCaseOpen || _pet.requestsIds.contains(_auth.id) || _caseProvider.getPetRequests.contains(_pet.id)
+                    ? null 
+                    : _requestCase, 
+                    child: Text('Request Case')),
                 )
               ],),
             )
