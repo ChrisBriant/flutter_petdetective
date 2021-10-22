@@ -58,6 +58,7 @@ class OwnerHomeScreen extends StatelessWidget {
                       pets.data![i].description
                     ),
                     onTap: () {
+                        _petProvider.setSelectedPet = pets.data![i];
                         Navigator.of(context).pushNamed(
                           PetScreen.routeName, arguments: {
                             'petId':pets.data![i].id,

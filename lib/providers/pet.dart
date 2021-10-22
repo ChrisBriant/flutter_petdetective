@@ -14,12 +14,13 @@ import '../providers/api_provider.dart';
 class Pet extends ApiProvider with ChangeNotifier {
   static const String BASEURL = 'https://petdetectivebackend.chrisbriant.uk/api';
   static const String MEDIAURL = 'https://petdetectivebackend.chrisbriant.uk';
-  List<MissingPet> pets = [];  
+  List<MissingPet> pets = [];
+  MissingPet? _selectedPet;  
 
   Map<String,dynamic> _formData = {};
 
   Pet(
-    this._formData
+    this._formData,
   );
 
   addToForm(String key,dynamic val) {
@@ -175,6 +176,14 @@ class Pet extends ApiProvider with ChangeNotifier {
 
   MissingPet getPet(petId) {
     return pets.firstWhere((e) => e.id == petId );
+  }
+
+  set setSelectedPet(pet) {
+    _selectedPet = pet;
+  }
+
+  MissingPet? get getSelectedPet {
+    return _selectedPet;
   }
 
 }

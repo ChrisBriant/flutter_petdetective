@@ -17,6 +17,7 @@ import '../screens/pet_screen.dart';
 import '../screens/detective_stack/detective_home_screen.dart';
 import '../screens/owner_stack/owner_home_screen.dart';
 import '../screens/pet_person_map_screen.dart';
+import '../screens/cases_requests_screen.dart';
 
 void main() {
   runApp(PetDetective());
@@ -50,7 +51,7 @@ class PetDetective extends StatelessWidget {
           create: (ctx) => LocationProvider()
         ),
         ChangeNotifierProvider(
-          create: (ctx) => CaseProvider([])
+          create: (ctx) => CaseProvider([],[],[])
         )
       ],
       child: Consumer<Auth>(
@@ -95,6 +96,7 @@ class PetDetective extends StatelessWidget {
             PetScreen.routeName : (ctx) => PetScreen(),
             MapScreen.routeName: (ctx) => MapScreen(),
             PetPersonMapScreen.routeName: (ctx) => PetPersonMapScreen(),
+            CaseRequestScreen.routeName: (ctx) => CaseRequestScreen()
           },
         ),
       ),

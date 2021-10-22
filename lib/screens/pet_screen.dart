@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:petdetective/screens/pet_person_map_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/pet.dart';
 import '../providers/auth.dart';
 import '../providers/case_provider.dart';
 import '../dialogs/request_dialog.dart';
+import '../screens/cases_requests_screen.dart';
+import '../screens/pet_person_map_screen.dart';
 
 class PetScreen extends StatelessWidget {
   static final routeName = '/petscreen';
@@ -17,8 +18,9 @@ class PetScreen extends StatelessWidget {
     final _auth = Provider.of<Auth>(context, listen: false);
     final Map<String,dynamic>? args = ModalRoute.of(context)!.settings.arguments as Map<String,dynamic>?;
 
-    final MissingPet _pet = _petProvider.getPet(args!['petId']);
-    final bool _isDetective = args['isDetective'];
+    //final MissingPet _pet = _petProvider.getPet(args!['petId']);
+    final MissingPet _pet = _petProvider.getSelectedPet!;
+    final bool _isDetective = args!['isDetective'];
     
 
     // if(args != null) {
@@ -96,7 +98,23 @@ class PetScreen extends StatelessWidget {
                       ]
                     ),
                 )
-                : Column(children: [],)
+                //OWNER BUTTONS
+                : Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical:10,horizontal:20),
+                      child: ElevatedButton(
+                        onPressed: () => Navigator.of(context).pushNamed(
+                          CaseRequestScreen.routeName,
+                          arguments: {
+                          'petId':_pet.id,
+                          }
+                        ), 
+                        child: Text('View Cases / Requests')
+                      ),
+                    )
+                  ],
+                )
               ],),
             )
           ],

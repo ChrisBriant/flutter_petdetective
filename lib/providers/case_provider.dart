@@ -7,13 +7,19 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/http_exception.dart';
+import '../providers/api_provider.dart';
 
-class CaseProvider with ChangeNotifier {
+class CaseProvider extends ApiProvider with ChangeNotifier {
   static const String BASEURL = 'https://petdetectivebackend.chrisbriant.uk/api';
   List<int> _petRequests;
+  List<DetectiveRequest> _detectiveRequests;
+  List<int> _petCases;
+
 
   CaseProvider (
-    this._petRequests
+    this._petRequests,
+    this._detectiveRequests,
+    this._petCases
   );
 
   // addToForm(String key,dynamic val) {
@@ -71,4 +77,74 @@ class CaseProvider with ChangeNotifier {
     return _petRequests;
   }
 
+  Future<List<DetectiveRequest>> getRequestsByPetId(id) async {
+    _detectiveRequests.clear();
+    Map<String,String> _headers;
+    try {
+      _headers = await getHeadersJsonWithAuth();
+      print(_headers);
+    } catch(err) {
+      print(err);
+      return [];
+    }
+
+    var res = await http.get(
+      Uri.parse('$BASEURL/pets/petrequests?pet_id=${id.toString()}'),
+      headers: _headers
+    );
+    if(res.statusCode == 200) {
+      final _responseData = json.decode(res.body);
+      for(var _pRequest in _responseData) {
+        print(_pRequest);
+        print(_pRequest['detective']['id']);
+        print(DateTime.parse(_pRequest['date_added']));
+        _detectiveRequests.add(
+          DetectiveRequest(
+            id: _pRequest['id'],
+            accepted: _pRequest['accepted'],
+            description: _pRequest['description'],
+            dateAdded: DateTime.parse(_pRequest['date_added']),
+            detective: Detective(
+              id: _pRequest['detective']['id'], 
+              name: _pRequest['detective']['name']
+            )
+          )
+        );
+      }
+      
+    }
+    return _detectiveRequests;
+  }
+
+}
+
+class Detective {
+  int id;
+  String name;
+  double? lat;
+  double? lng;
+
+  Detective({
+    required this.id,
+    required this.name,
+    this.lat,
+    this.lng,
+  });
+}
+
+class DetectiveRequest {
+  int id;
+  bool accepted;
+  String description;
+  DateTime dateAdded;
+  Detective detective;
+
+  DetectiveRequest({
+    required this.id,
+    required this.accepted,
+    required this.description,
+    required this.dateAdded,
+    required this.detective
+  });
+  
 }
