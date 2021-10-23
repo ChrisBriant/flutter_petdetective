@@ -3,10 +3,11 @@ import 'package:provider/provider.dart';
 
 import '../providers/case_provider.dart';
 import '../providers/pet.dart';
+import '../helpers/helpers.dart';
 
 
 class PetCaseRequestScreen extends StatelessWidget {
-  static final routeName = '/caserequest';
+  static final routeName = '/petcaserequest';
   
   
 
@@ -173,21 +174,25 @@ class _RequestItemState extends State<RequestItem> {
             )
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextPairColumn(
                 text1: 'Detective:', 
-                text2: widget.reqItem.detective.name
+                text2: widget.reqItem.detective.name,
+                width: MediaQuery.of(context).size.width * 0.15,
               ),    
               //Text(reqs.data![i].detective.name),
               TextPairColumn(
                 text1: 'Description:', 
-                text2: widget.reqItem.description
+                text2: Helpers.truncateIfOver(widget.reqItem.description, 50),
+                width: MediaQuery.of(context).size.width * 0.3,
               ),
               Spacer(),
               Align(
-                alignment: Alignment.centerRight,
+                alignment: Alignment.topRight,
                 child: Container(
-                  width: 100,
+                  width: MediaQuery.of(context).size.width * 0.25,
                   child: ElevatedButton(
                     onPressed: _enableAccept
                     ? () { _acceptRequest(widget.reqItem.id); }
@@ -224,24 +229,27 @@ class CaseItem extends StatelessWidget {
         )
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextPairColumn(
             text1: 'Detective:', 
-            text2: detective
+            text2: detective,
+            width: MediaQuery.of(context).size.width * 0.2,
           ),    
           //Text(reqs.data![i].detective.name),
           TextPairColumn(
             text1: 'Status:', 
-            text2: status
+            text2: status,
+            width: MediaQuery.of(context).size.width * 0.15
           ),
           Spacer(),
           Align(
             alignment: Alignment.centerRight,
             child: Container(
-              width: 100,
+              width: MediaQuery.of(context).size.width * 0.3,
               child: ElevatedButton(
                 onPressed: () { },
-                child: Text('View Case')
+                child: Text('View')
               ),
             ),
           )
@@ -255,10 +263,12 @@ class CaseItem extends StatelessWidget {
 class TextPairColumn extends StatelessWidget {
   final String text1;
   final String text2;
+  final double width;
 
   const TextPairColumn({
     required this.text1,
-    required this.text2
+    required this.text2,
+    required this.width
   });
 
 
@@ -266,16 +276,19 @@ class TextPairColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(text1,style: Theme.of(context).textTheme.bodyText1!
-            .merge(TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
-          SizedBox(height: 10,),
-          Text(text2, style: Theme.of(context).textTheme.bodyText1!
-            .merge(TextStyle(fontSize: 16))
-          )
-        ],
+      child: Container(
+        width: width,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(text1,style: Theme.of(context).textTheme.bodyText1!
+              .merge(TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
+            SizedBox(height: 10,),
+            Text(text2, style: Theme.of(context).textTheme.bodyText1!
+              .merge(TextStyle(fontSize: 16))
+            )
+          ],
+        ),
       ),
     );
   }

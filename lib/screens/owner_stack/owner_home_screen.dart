@@ -6,6 +6,7 @@ import '../../providers/auth.dart';
 import '../../providers/pet.dart';
 import '../../screens/pet_screen.dart';
 import '../owner_stack/add_pet_screen.dart';
+import '../../widgets/app_drawer.dart';
 
 class OwnerHomeScreen extends StatelessWidget {
   static final routeName = '/homedetective';
@@ -19,6 +20,7 @@ class OwnerHomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Welcome Owner'),
       ),
+      drawer: AppDrawer(),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

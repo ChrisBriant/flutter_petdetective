@@ -51,13 +51,6 @@ class Pet extends ApiProvider with ChangeNotifier {
         _formData['picture']
       )
     );
-    // request.fields['name'] = _formData['name'];
-    // print(this._formData['name']);
-    // request.fields['description'] = _formData['description'];
-    // request.fields['lastSeen'] = _formData['lastSeen'];
-    // request.fields['animal'] = _formData['animal'];
-    // request.fields['lat'] = '52.397532'; 
-    // request.fields['lng'] = '-1.997979';
 
     request.fields['name'] = name;
     request.fields['description'] = description;
@@ -77,8 +70,8 @@ class Pet extends ApiProvider with ChangeNotifier {
   }
 
   void _addPets(responseData) {
+    pets.clear();
     for(var item in responseData) {
-      pets.clear();
       //Get the missing location of the pet
       List<dynamic> _locations = item['locations'];
       dynamic _missingLocation = _locations.firstWhere((element) => element['location_type'] == 'Missing Location');
@@ -163,6 +156,9 @@ class Pet extends ApiProvider with ChangeNotifier {
       print(err);
       return [];
     }
+
+    print('Getting Pets');
+    print('$BASEURL/pets/mypets/');
 
     var res = await http.get(
       Uri.parse('$BASEURL/pets/mypets/'),
