@@ -45,7 +45,6 @@ class OwnerHomeScreen extends StatelessWidget {
                     leading: Container(
                       width: 100,
                       height: 100,
-                      //child: Text('hello'),
                       child: Padding(
                         padding: EdgeInsets.all(5),
                         child: CircleAvatar(backgroundImage: NetworkImage(pets.data![i].imgUrl),)

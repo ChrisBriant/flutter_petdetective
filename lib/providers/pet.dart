@@ -78,11 +78,11 @@ class Pet extends ApiProvider with ChangeNotifier {
 
   void _addPets(responseData) {
     for(var item in responseData) {
+      pets.clear();
       //Get the missing location of the pet
       List<dynamic> _locations = item['locations'];
       dynamic _missingLocation = _locations.firstWhere((element) => element['location_type'] == 'Missing Location');
       List<dynamic> _requestsIds = json.decode(item['requests_detective_id']);
-      print(_missingLocation);
       pets.add(MissingPet(
         name: item['name'],
         animal: item['animal'],
@@ -134,7 +134,7 @@ class Pet extends ApiProvider with ChangeNotifier {
         List<dynamic> _requestsIds = json.decode(item['requests_detective_id']);
         //List<String> _requestsIdsStr = item['requests_detective_id'];
         //List<int> _requestsIds = _requestsIdsStr.map(int.parse).toList();
-        print(_missingLocation);
+        print('processing missing pet');
         pets.add(MissingPet(
                   name: item['name'],
                   animal: item['animal'],

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,7 +14,7 @@ class CaseProvider extends ApiProvider with ChangeNotifier {
   static const String BASEURL = 'https://petdetectivebackend.chrisbriant.uk/api';
   List<int> _petRequests;
   List<DetectiveRequest> _detectiveRequests;
-  List<int> _petCases;
+  List<Case> _petCases;
 
 
   CaseProvider (
@@ -22,21 +23,11 @@ class CaseProvider extends ApiProvider with ChangeNotifier {
     this._petCases
   );
 
-  // addToForm(String key,dynamic val) {
-  //   _formData[key] = val;
-  //   notifyListeners();
-  // }
-
-  // dynamic getFormValue(String key) {
-  //   return _formData[key];
-  // }
-
   Future<bool> makeRequest(petId,description) async {
     final url = Uri.parse('$BASEURL/pets/makerequest/');
     Map<String,String> _headers;
     try {
       _headers = await _getHeaders();
-      print(_headers);
     } catch(err) {
       print(err);
       return false;
@@ -77,12 +68,24 @@ class CaseProvider extends ApiProvider with ChangeNotifier {
     return _petRequests;
   }
 
+  DetectiveRequest _createDetectiveRequest(data) {
+    return DetectiveRequest(
+      id: data['id'],
+      accepted: data['accepted'],
+      description: data['description'],
+      dateAdded: DateTime.parse(data['date_added']),
+      detective: Detective(
+        id: data['detective']['id'], 
+        name: data['detective']['name']
+      )
+    );
+  }  
+
   Future<List<DetectiveRequest>> getRequestsByPetId(id) async {
     _detectiveRequests.clear();
     Map<String,String> _headers;
     try {
       _headers = await getHeadersJsonWithAuth();
-      print(_headers);
     } catch(err) {
       print(err);
       return [];
@@ -95,9 +98,6 @@ class CaseProvider extends ApiProvider with ChangeNotifier {
     if(res.statusCode == 200) {
       final _responseData = json.decode(res.body);
       for(var _pRequest in _responseData) {
-        print(_pRequest);
-        print(_pRequest['detective']['id']);
-        print(DateTime.parse(_pRequest['date_added']));
         _detectiveRequests.add(
           DetectiveRequest(
             id: _pRequest['id'],
@@ -111,9 +111,49 @@ class CaseProvider extends ApiProvider with ChangeNotifier {
           )
         );
       }
-      
     }
     return _detectiveRequests;
+  }
+
+  Future<List<Case>> getCases(id) async {
+    _petCases.clear();
+    var res = await http.get(
+      Uri.parse('$BASEURL/pets/petcases?pet_id=${id.toString()}'),
+      headers: await getHeadersJsonWithAuth()
+    );
+    print('PET CASES');
+    print(res.statusCode);
+    if(res.statusCode == 200) {
+      final _responseData = json.decode(res.body);
+      print(_responseData);
+      for(var _pCase in _responseData) {
+        _petCases.add(
+          Case(
+            id: _pCase['id'], 
+            dateAdded: DateTime.parse(_pCase['date_added']),
+            detective: Detective(
+                          id: _pCase['detective']['id'], 
+                          name: _pCase['detective']['name']
+            )
+          )
+        );
+      }
+    }
+    return _petCases;
+  } 
+
+  Future<void> acceptRequest(id) async {
+    var res = await http.post(
+      Uri.parse('$BASEURL/pets/acceptrequest/'),
+      body: json.encode({'id': id}),
+      headers: await getHeadersJsonWithAuth()
+    );
+    if(res.statusCode == 201) {
+      notifyListeners();
+      return;
+    }
+    //sleep(Duration(seconds: 5));
+    throw HttpException('Something went wrong accepting the request.');
   }
 
 }
@@ -147,4 +187,16 @@ class DetectiveRequest {
     required this.detective
   });
   
+}
+
+class Case {
+  int id;
+  DateTime dateAdded;
+  Detective detective;
+
+  Case({
+    required this.id,
+    required this.dateAdded,
+    required this.detective
+  });
 }
