@@ -13,7 +13,7 @@ import '../providers/api_provider.dart';
 
 class Pet extends ApiProvider with ChangeNotifier {
   static const String BASEURL = 'https://petdetectivebackend.chrisbriant.uk/api';
-  static const String MEDIAURL = 'https://petdetectivebackend.chrisbriant.uk';
+  
   List<MissingPet> pets = [];
   MissingPet? _selectedPet;  
 
@@ -84,9 +84,11 @@ class Pet extends ApiProvider with ChangeNotifier {
         lastSeen: item['last_seen'],
         lat: _missingLocation['lat'],
         lng: _missingLocation['lng'],
-        imgUrl: MEDIAURL + item['picture'],
+        imgUrl: ApiProvider.MEDIAURL + item['picture'],
         requestsIds: _requestsIds.cast<int>(),
-        isCaseOpen: item['is_case_open']   
+        isCaseOpen: item['is_case_open'],
+        status: item['status'],
+        statusStr: item['status_str']      
       ));
     }
   }
@@ -136,9 +138,11 @@ class Pet extends ApiProvider with ChangeNotifier {
                   lastSeen: item['last_seen'],
                   lat: _missingLocation['lat'],
                   lng: _missingLocation['lng'],
-                  imgUrl: MEDIAURL + item['picture'],
+                  imgUrl: ApiProvider.MEDIAURL + item['picture'],
                   requestsIds: _requestsIds.cast<int>(),
-                  isCaseOpen: item['is_case_open']   
+                  isCaseOpen: item['is_case_open'],
+                  status: item['status'],
+                  statusStr: item['status_str']   
                 ));
       }
       return pets;
@@ -195,6 +199,8 @@ class MissingPet {
     String imgUrl;
     List<int> requestsIds;
     bool isCaseOpen;
+    int status;
+    String statusStr;
 
     MissingPet({
       required this.id,
@@ -206,7 +212,10 @@ class MissingPet {
       required this.lng,
       required this.imgUrl,
       required this.requestsIds,
-      required this.isCaseOpen
+      required this.isCaseOpen,
+      required this.status,
+      required this.statusStr
+
     });
 
 }

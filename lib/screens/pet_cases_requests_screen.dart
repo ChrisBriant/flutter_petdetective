@@ -31,7 +31,7 @@ class PetCaseRequestScreen extends StatelessWidget {
           child: Column(
             children: [
               FutureBuilder<List<DetectiveRequest>>(
-                future: _caseProvider.getRequestsByPetId(_pet.id),
+                future: _caseProvider.getRequests(id:_pet.id),
                 builder: (ctx, reqs) => reqs.connectionState == ConnectionState.waiting
                 ? Container(
                   height: 100,
@@ -74,7 +74,7 @@ class PetCaseRequestScreen extends StatelessWidget {
               ),
               SizedBox(height: 20,),
               FutureBuilder<List<Case>>(
-                future: _caseProvider.getCases(_pet.id),
+                future: _caseProvider.getCases(id:_pet.id),
                 builder: (ctx, cases) => cases.connectionState == ConnectionState.waiting
                 ? CircleAvatar()
                 : Card(

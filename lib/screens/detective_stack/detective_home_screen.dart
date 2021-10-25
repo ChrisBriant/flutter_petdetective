@@ -6,6 +6,7 @@ import '../../providers/location_provider.dart';
 import '../../providers/pet.dart';
 import '../../dialogs/location_alert.dart';
 import '../../screens/pet_screen.dart';
+import '../../widgets/app_drawer.dart';
 
 class DetectiveHomeScreen extends StatelessWidget {
   static final routeName = '/homedetective';
@@ -32,6 +33,7 @@ class DetectiveHomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Welcome Detective'),
       ),
+      drawer: AppDrawer(),
       body: FutureBuilder(
         future: _locationProvider.isLocationSet,
         builder: (ctx,locationSet) =>  locationSet.connectionState == ConnectionState.waiting

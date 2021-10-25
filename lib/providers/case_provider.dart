@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
+import 'package:petdetective/providers/pet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -69,6 +70,9 @@ class CaseProvider extends ApiProvider with ChangeNotifier {
   }
 
   DetectiveRequest _createDetectiveRequest(data) {
+    List<dynamic> _locations = data['pet']['locations'];
+    dynamic _missingLocation = _locations.firstWhere((element) => element['location_type'] == 'Missing Location');
+    List<dynamic> _requestsIds = json.decode(data['pet']['requests_detective_id']);
     return DetectiveRequest(
       id: data['id'],
       accepted: data['accepted'],
@@ -77,11 +81,25 @@ class CaseProvider extends ApiProvider with ChangeNotifier {
       detective: Detective(
         id: data['detective']['id'], 
         name: data['detective']['name']
+      ),
+      pet: MissingPet(
+        id: data['pet']['id'], 
+        name: data['pet']['name'], 
+        description: data['pet']['description'], 
+        lastSeen: data['pet']['last_seen'], 
+        animal: data['pet']['animal'], 
+        lat: _missingLocation['lat'], 
+        lng: _missingLocation['lng'], 
+        imgUrl: ApiProvider.MEDIAURL + data['pet']['picture'], 
+        requestsIds: _requestsIds.cast<int>(), 
+        isCaseOpen: data['pet']['is_case_open'],
+        status: data['pet']['status'],
+        statusStr: data['pet']['status_str']   
       )
     );
   }  
 
-  Future<List<DetectiveRequest>> getRequestsByPetId(id) async {
+  Future<List<DetectiveRequest>> getRequests({id=0,byPet=true}) async {
     _detectiveRequests.clear();
     Map<String,String> _headers;
     try {
@@ -91,13 +109,24 @@ class CaseProvider extends ApiProvider with ChangeNotifier {
       return [];
     }
 
+    Uri uri;
+
+    if(byPet) {
+      uri = Uri.parse('$BASEURL/pets/petrequests?pet_id=${id.toString()}');
+    } else {
+      uri = Uri.parse('$BASEURL/pets/myrequests?qstype=all');
+    }
+
     var res = await http.get(
-      Uri.parse('$BASEURL/pets/petrequests?pet_id=${id.toString()}'),
+      uri,
       headers: _headers
     );
     if(res.statusCode == 200) {
       final _responseData = json.decode(res.body);
       for(var _pRequest in _responseData) {
+        List<dynamic> _locations = _pRequest['pet']['locations'];
+        dynamic _missingLocation = _locations.firstWhere((element) => element['location_type'] == 'Missing Location');
+        List<dynamic> _requestsIds = json.decode(_pRequest['pet']['requests_detective_id']);
         _detectiveRequests.add(
           DetectiveRequest(
             id: _pRequest['id'],
@@ -107,6 +136,20 @@ class CaseProvider extends ApiProvider with ChangeNotifier {
             detective: Detective(
               id: _pRequest['detective']['id'], 
               name: _pRequest['detective']['name']
+            ),
+            pet: MissingPet(
+              id: _pRequest['pet']['id'], 
+              name: _pRequest['pet']['name'], 
+              description: _pRequest['pet']['description'], 
+              lastSeen: _pRequest['pet']['last_seen'], 
+              animal: _pRequest['pet']['animal'], 
+              lat: _missingLocation['lat'], 
+              lng: _missingLocation['lng'], 
+              imgUrl: ApiProvider.MEDIAURL + _pRequest['pet']['picture'], 
+              requestsIds: _requestsIds.cast<int>(), 
+              isCaseOpen: _pRequest['pet']['is_case_open'],
+              status: _pRequest['pet']['status'],
+              statusStr: _pRequest['pet']['status_str']   
             )
           )
         );
@@ -115,18 +158,23 @@ class CaseProvider extends ApiProvider with ChangeNotifier {
     return _detectiveRequests;
   }
 
-  Future<List<Case>> getCases(id) async {
+  Future<List<Case>> getCases({id=0,byPet=true}) async {
+    Uri uri;
+    byPet
+    ? uri = Uri.parse('$BASEURL/pets/petcases?pet_id=${id.toString()}')
+    : uri = Uri.parse('$BASEURL/pets/mycases');
+
     _petCases.clear();
     var res = await http.get(
-      Uri.parse('$BASEURL/pets/petcases?pet_id=${id.toString()}'),
+      uri,
       headers: await getHeadersJsonWithAuth()
     );
-    print('PET CASES');
-    print(res.statusCode);
     if(res.statusCode == 200) {
       final _responseData = json.decode(res.body);
-      print(_responseData);
       for(var _pCase in _responseData) {
+        List<dynamic> _locations = _pCase['pet']['locations'];
+        dynamic _missingLocation = _locations.firstWhere((element) => element['location_type'] == 'Missing Location');
+        List<dynamic> _requestsIds = json.decode(_pCase['pet']['requests_detective_id']);
         _petCases.add(
           Case(
             id: _pCase['id'], 
@@ -134,6 +182,20 @@ class CaseProvider extends ApiProvider with ChangeNotifier {
             detective: Detective(
                           id: _pCase['detective']['id'], 
                           name: _pCase['detective']['name']
+            ),
+            pet: MissingPet(
+              id: _pCase['pet']['id'], 
+              name: _pCase['pet']['name'], 
+              description: _pCase['pet']['description'], 
+              lastSeen: _pCase['pet']['last_seen'], 
+              animal: _pCase['pet']['animal'], 
+              lat: _missingLocation['lat'], 
+              lng: _missingLocation['lng'], 
+              imgUrl: ApiProvider.MEDIAURL + _pCase['pet']['picture'], 
+              requestsIds: _requestsIds.cast<int>(), 
+              isCaseOpen: _pCase['pet']['is_case_open'],
+              status: _pCase['pet']['status'],
+              statusStr: _pCase['pet']['status_str']   
             )
           )
         );
@@ -158,6 +220,7 @@ class CaseProvider extends ApiProvider with ChangeNotifier {
 
 }
 
+
 class Detective {
   int id;
   String name;
@@ -178,13 +241,15 @@ class DetectiveRequest {
   String description;
   DateTime dateAdded;
   Detective detective;
+  MissingPet pet;
 
   DetectiveRequest({
     required this.id,
     required this.accepted,
     required this.description,
     required this.dateAdded,
-    required this.detective
+    required this.detective,
+    required this.pet
   });
   
 }
@@ -193,10 +258,12 @@ class Case {
   int id;
   DateTime dateAdded;
   Detective detective;
+  MissingPet pet;
 
   Case({
     required this.id,
     required this.dateAdded,
-    required this.detective
+    required this.detective,
+    required this.pet
   });
 }

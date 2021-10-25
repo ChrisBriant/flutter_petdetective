@@ -4,6 +4,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 class ApiProvider {
+  static const String BASEURL = 'https://petdetectivebackend.chrisbriant.uk/api';
+  static const String MEDIAURL = 'https://petdetectivebackend.chrisbriant.uk';
+  
   Future<Map<String, String>> getHeadersJsonWithAuth() async {
     final prefs = await SharedPreferences.getInstance();
 

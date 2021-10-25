@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth.dart';
+import '../screens/cases_requests_screen.dart';
+import '../screens/user_profile_screen.dart';
 
 class AppDrawer extends StatelessWidget {
 
@@ -18,15 +20,29 @@ class AppDrawer extends StatelessWidget {
             style: TextStyle(fontSize: 22),
           ),
           ListTile(
+            leading: Icon(Icons.person),
+            title: Text('My Profile'),
+            onTap: () { 
+              Navigator.of(context).pop();
+              Navigator.of(context).pushNamed(UserProfileScreen.routeName); 
+            },
+          ),
+          ListTile(
             leading: Icon(Icons.folder_shared),
             title: Text('My Cases / Requests'),
-            onTap: () {  },
+            onTap: () { 
+              Navigator.of(context).pop();
+              Navigator.of(context).pushNamed(CaseRequestScreen.routeName); 
+            },
           ),
           Divider(),
           ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
-            onTap: () { _auth.signout(); },
+            onTap: () { 
+              Navigator.of(context).pop();
+              _auth.signout(); 
+            },
           )
 
         ],),

@@ -14,10 +14,12 @@ import '../screens/signup_completed_screen.dart';
 import 'screens/owner_stack/add_pet_screen.dart';
 import '../screens/map_screen.dart';
 import '../screens/pet_screen.dart';
+import '../screens/user_profile_screen.dart';
 import '../screens/detective_stack/detective_home_screen.dart';
 import '../screens/owner_stack/owner_home_screen.dart';
 import '../screens/pet_person_map_screen.dart';
 import 'screens/pet_cases_requests_screen.dart';
+import 'screens/cases_requests_screen.dart';
 
 void main() {
   runApp(PetDetective());
@@ -96,7 +98,9 @@ class PetDetective extends StatelessWidget {
             PetScreen.routeName : (ctx) => PetScreen(),
             MapScreen.routeName: (ctx) => MapScreen(),
             PetPersonMapScreen.routeName: (ctx) => PetPersonMapScreen(),
-            PetCaseRequestScreen.routeName: (ctx) => PetCaseRequestScreen()
+            PetCaseRequestScreen.routeName: (ctx) => PetCaseRequestScreen(),
+            CaseRequestScreen.routeName: (ctx) => CaseRequestScreen(),
+            UserProfileScreen.routeName: (ctx) => UserProfileScreen()
           },
         ),
       ),

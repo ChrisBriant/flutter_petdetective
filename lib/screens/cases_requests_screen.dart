@@ -3,22 +3,18 @@ import 'package:provider/provider.dart';
 
 import '../providers/case_provider.dart';
 import '../providers/pet.dart';
+import '../providers/auth.dart';
 
 
-class PetCaseRequestScreen extends StatelessWidget {
+class CaseRequestScreen extends StatelessWidget {
   static final routeName = '/caserequest';
   
   
 
   @override
   Widget build(BuildContext context) {
-    final Map<String,dynamic>? args = ModalRoute.of(context)!.settings.arguments as Map<String,dynamic>?;
-    final int _petId = args!['petId'];
     final _caseProvider = Provider.of<CaseProvider>(context, listen: true);
     final _petProvider = Provider.of<Pet>(context, listen: false);
-
-    final MissingPet _pet = _petProvider.getSelectedPet!;
-    print(_pet.id);
 
 
 
@@ -30,7 +26,7 @@ class PetCaseRequestScreen extends StatelessWidget {
           child: Column(
             children: [
               FutureBuilder<List<DetectiveRequest>>(
-                future: _caseProvider.getRequestsByPetId(_pet.id),
+                future: _caseProvider.getRequests(byPet: false),
                 builder: (ctx, reqs) => reqs.connectionState == ConnectionState.waiting
                 ? Container(
                   height: 100,
@@ -73,7 +69,7 @@ class PetCaseRequestScreen extends StatelessWidget {
               ),
               SizedBox(height: 20,),
               FutureBuilder<List<Case>>(
-                future: _caseProvider.getCases(_pet.id),
+                future: _caseProvider.getCases(byPet: false),
                 builder: (ctx, cases) => cases.connectionState == ConnectionState.waiting
                 ? CircleAvatar()
                 : Card(
@@ -92,11 +88,7 @@ class PetCaseRequestScreen extends StatelessWidget {
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
                               itemCount: cases.data!.length,
-                              itemBuilder: (ctx, i) => CaseItem(
-                                key: ValueKey(cases.data![i].id), 
-                                detective: cases.data![i].detective.name, 
-                                status: 'Open'
-                              )
+                              itemBuilder: (ctx, i) => CaseItem(pCase:cases.data![i])
                             )
                             : Text(
                               'This pet has no cases.',
@@ -142,6 +134,7 @@ class _RequestItemState extends State<RequestItem> {
 
   @override
   Widget build(BuildContext context) {
+    final _auth = Provider.of<Auth>(context, listen: false);
     
     _acceptRequest(id) async {
       setState(() {
@@ -160,43 +153,77 @@ class _RequestItemState extends State<RequestItem> {
         _enableAccept = true;
       });
     }
+
+    _viewRequest(id) {
+      print('View Request');
+    }
     
     return Container(
       key: ValueKey(widget.reqItem.id),
-        child: Container(
-          padding: EdgeInsets.all(6),
-          decoration: BoxDecoration(border: 
-            Border.all(
-              color: Colors.amber.shade200,
-              width: 1,
-              style: BorderStyle.solid
-            )
-          ),
-          child: Row(
-            children: [
-              TextPairColumn(
-                text1: 'Detective:', 
-                text2: widget.reqItem.detective.name
-              ),    
-              //Text(reqs.data![i].detective.name),
-              TextPairColumn(
-                text1: 'Description:', 
-                text2: widget.reqItem.description
-              ),
-              Spacer(),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Container(
-                  width: 100,
-                  child: ElevatedButton(
+        child: FutureBuilder<bool>(
+          future: _auth.isDetective(),
+          builder: (ctx,auth) => auth.connectionState == ConnectionState.waiting
+          ? CircleAvatar()
+          : Container(
+            padding: EdgeInsets.all(6),
+            decoration: BoxDecoration(border: 
+              Border.all(
+                color: Colors.amber.shade200,
+                width: 1,
+                style: BorderStyle.solid
+              )
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.2,
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(widget.reqItem.pet.imgUrl),
+                  )
+                ), 
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  child: auth.data!
+                  ? TextPairColumn(
+                    text1: 'Pet Name:', 
+                    text2: widget.reqItem.pet.name
+                  )
+                  : TextPairColumn(
+                    text1: 'Detective:', 
+                    text2: widget.reqItem.detective.name
+                  ),
+                ),    
+                Spacer(),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.15,
+                  child: TextButton(
+                    onPressed: _enableAccept
+                    ? () { _viewRequest(widget.reqItem.id); }
+                    : null,
+                    child: Text('View')
+                  ),
+                ),
+                widget.reqItem.accepted
+                ? Icon(
+                  Icons.check,
+                  color: Colors.green.shade600,
+                )
+                : auth.data!
+                ? Icon(
+                  Icons.dangerous,
+                  color: Colors.red.shade600,
+                )
+                : Container(
+                  width: MediaQuery.of(context).size.width * 0.15,
+                  child: TextButton(
                     onPressed: _enableAccept
                     ? () { _acceptRequest(widget.reqItem.id); }
                     : null,
                     child: Text('Accept')
                   ),
                 ),
-              )
-            ]
+              ]
+            ),
           ),
         )
       );
@@ -204,48 +231,51 @@ class _RequestItemState extends State<RequestItem> {
 }
 
 class CaseItem extends StatelessWidget {
-  final String detective;
-  final String status;
+  final Case pCase;
+
   const CaseItem({ 
-    required this.detective,
-    required this.status,
+    required this.pCase,
     Key? key 
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(6),
-      decoration: BoxDecoration(border: 
-        Border.all(
-          color: Colors.amber.shade200,
-          width: 1,
-          style: BorderStyle.solid
-        )
-      ),
-      child: Row(
-        children: [
-          TextPairColumn(
-            text1: 'Detective:', 
-            text2: detective
-          ),    
-          //Text(reqs.data![i].detective.name),
-          TextPairColumn(
-            text1: 'Status:', 
-            text2: status
+    final _auth = Provider.of<Auth>(context, listen: false);
+
+    _viewCase(id) {
+      print('View Case $id');
+    }
+
+    return FutureBuilder<bool>(
+      future: _auth.isDetective(),
+      builder: (ctx,auth) => auth.connectionState == ConnectionState.waiting
+      ? CircularProgressIndicator()
+      : auth.data!
+      ? Container(
+        child: ListTile(
+          leading: CircleAvatar(backgroundImage: NetworkImage(pCase.pet.imgUrl),),
+          title: Row(
+            children: [
+              Text('Name: ', style: TextStyle(fontWeight: FontWeight.bold),),
+              Text(pCase.pet.name)
+            ],
           ),
-          Spacer(),
-          Align(
-            alignment: Alignment.centerRight,
-            child: Container(
-              width: 100,
-              child: ElevatedButton(
-                onPressed: () { },
-                child: Text('View Case')
-              ),
-            ),
-          )
-        ]
+          subtitle: Text(pCase.pet.statusStr),
+          onTap: () { _viewCase(pCase.id);} ,
+        ),
+      )
+      : Container(
+        child: ListTile(
+          leading: CircleAvatar(backgroundImage: NetworkImage(pCase.pet.imgUrl),),
+          title: Row(
+            children: [
+              Text('Detective: ', style: TextStyle(fontWeight: FontWeight.bold),),
+              Text(pCase.detective.name)
+            ],
+          ),
+          subtitle: Text(pCase.pet.statusStr),
+          onTap: () { _viewCase(pCase.id);} ,
+        ),
       )
     );
   }

@@ -3,17 +3,19 @@ import 'dart:async';
 
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:flutter/widgets.dart';
+import 'package:petdetective/providers/api_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/http_exception.dart';
 
-class Auth with ChangeNotifier {
+class Auth extends ApiProvider with ChangeNotifier {
   static const String BASEURL = 'https://petdetectivebackend.chrisbriant.uk/api'; 
 
   Map<String,dynamic> _formData = {};
   int userId;
+  UserProfile? _userProfile;
 
   Auth(
     this._formData,
@@ -40,9 +42,9 @@ class Auth with ChangeNotifier {
     _justSignedUp = false;
   }
 
-  void _setSessionData(id) {
-    userId = id;
-  }
+  // void _setSessionData(id) {
+  //   userId = id;
+  // }
 
   static Future<void> _setToken(token,refresh,expiryDate,isDetective,id) async {
     final userData = json.encode({
@@ -80,7 +82,7 @@ class Auth with ChangeNotifier {
           Map<String, dynamic> payload = Jwt.parseJwt(token);
           //TODO - Get the user ID from the payload and store
           await _setToken(token, refresh, expiryDate, payload['is_detective'],payload['user_id']);
-          _setSessionData(payload['user_id']);
+          //_setSessionData(payload['user_id']);
           notifyListeners();
         } else {
           throw HttpException('Something went wrong tying to log on.');
@@ -121,7 +123,7 @@ class Auth with ChangeNotifier {
         if(responseData['access'] != null) {
           //set the access token
           await _setToken(responseData['access'], refresh, expiryDate,isDetective,id);
-          _setSessionData(id);
+          //_setSessionData(id);
           return true;
         } else {
           return false;
@@ -203,8 +205,74 @@ class Auth with ChangeNotifier {
     throw Exception('Unable to retrieve user data.');
   }
 
-  // int get id {
-  //   return userId;
-  // }
+  Future<UserProfile?> get myProfile async {
+    final uri = Uri.parse('$BASEURL/account/myprofile');
+
+    Map<String,String> _headers;
+    try {
+      _headers = await getHeadersJsonWithAuth();
+    } catch(err) {
+      print(err);
+      return null;
+    }
+
+    final res = await http.get(
+      uri,
+      headers: _headers
+    );
+
+    if(res.statusCode == 200) {
+      final _responseData = json.decode(res.body);
+
+      double? _lat;
+      double? _lng;
+
+      print('User profile');
+      print(_responseData);
+
+      if(_responseData['location'] != null) {
+        print('Adding lat lng');
+          _lat = _responseData['location']['lat'];
+          _lng = _responseData['location']['lng'];
+      }
+
+      _userProfile = UserProfile(
+        id: _responseData['id'], 
+        name: _responseData['name'], 
+        isDetective: _responseData['is_detective'], 
+        requestCount: _responseData['request_count'], 
+        caseCount: _responseData['case_count'],
+        lat: _lat,
+        lng: _lng
+      );
+      return _userProfile;
+    }
+
+    throw HttpException('Something went wrong retrieving the user profile.');
+
+    
+  }
+
+}
+
+
+class UserProfile {
+  final int id;
+  final String name;
+  final bool isDetective;
+  final double? lat;
+  final double? lng;
+  final int requestCount;
+  final int caseCount;
+
+  const UserProfile({
+    required this.id,
+    required this.name,
+    required this.isDetective,
+    this.lat,
+    this.lng,
+    required this.requestCount,
+    required this.caseCount
+  });
 
 }

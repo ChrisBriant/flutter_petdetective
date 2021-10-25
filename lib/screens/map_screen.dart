@@ -55,7 +55,13 @@ class MapScreen extends StatelessWidget {
                           break;
                         case 'prefs':
                           _locationProvider.setLocationData(latLng.latitude, latLng.longitude);
-                          _locationProvider.setMyLocation(latLng.latitude, latLng.longitude);
+                          try {
+                            _locationProvider.setMyLocation(latLng.latitude, latLng.longitude);
+                          } catch(err) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(err.toString()),
+                            ));
+                          }
                           break;
                         default:
                           _locationProvider.setLocationData(latLng.latitude, latLng.longitude);

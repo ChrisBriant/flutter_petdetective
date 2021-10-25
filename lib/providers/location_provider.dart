@@ -3,9 +3,13 @@ import 'dart:convert';
 import 'package:location/location.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+
+import '../models/http_exception.dart';
+import './api_provider.dart';
 
 
-class LocationProvider with ChangeNotifier{
+class LocationProvider extends ApiProvider with ChangeNotifier{
   Location _location = new Location();
   late LocationData _locationData;
   bool _locationLoaded = false;
@@ -106,7 +110,30 @@ class LocationProvider with ChangeNotifier{
     );
     print('Setting Location');
     _prefs.setString('locationData', _newLocationData);
- 
+
+    //Set in database
+    final uri = Uri.parse('${ApiProvider.BASEURL}/pets/addlocation/');
+
+    Map<String,String> _headers;
+    try {
+      _headers = await getHeadersJsonWithAuth();
+    } catch(err) {
+      print(err);
+      return null;
+    }
+
+    var res = await http.post(
+      uri,
+      body: json.encode({
+        'lat': lat,
+        'lng': lng
+      }),
+      headers: _headers
+    );
+
+    if(res.statusCode != 201) {
+      throw HttpException('Couldn\'t set location on database.');
+    }
   }
 
 }
