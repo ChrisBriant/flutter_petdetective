@@ -63,6 +63,7 @@ class AppDrawer extends StatelessWidget {
               //     ), 
               //     (route) => false
               //   );
+              //   Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
               //   //Navigator.of(context).pop();
               // }
               // Navigator.of(context).pushAndRemoveUntil(

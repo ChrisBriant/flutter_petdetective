@@ -131,6 +131,8 @@ class LocationProvider extends ApiProvider with ChangeNotifier{
       headers: _headers
     );
 
+    print(res.statusCode);
+
     if(res.statusCode != 201) {
       throw HttpException('Couldn\'t set location on database.');
     }
