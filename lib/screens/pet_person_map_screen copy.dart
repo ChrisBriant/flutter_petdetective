@@ -45,7 +45,7 @@ class PetPersonMapScreen extends StatelessWidget {
     }
 
 
-    Future<List<Marker>> _getMarkers() async {
+    List<Marker> _getMarkers() {
       switch (_mapMode) {
         case 'single-pet':
           List<MissingPet> _petsFound = [];
@@ -64,10 +64,14 @@ class PetPersonMapScreen extends StatelessWidget {
           return _markersList;
         case 'single-person':
           //Future<Map<String,double>?> _locationData = 
-          Map<String, dynamic>? _location = await _locationProvider.getMyLocation();
- 
-          _markersList.add(_getMarker(_location!['lat'],_location['lng']));
-
+          _locationProvider.getMyLocation().then(
+            (location) {
+              print(location);
+              if(location != null) {
+                _markersList.add(_getMarker(location['lat'],location['lng']));
+              }
+            }
+          );
           // UserProfile? _userProfile = _auth.savedProfile;
           // _userProfile != null
           // ? _markersList.add(_getMarker(_userProfile.lat,_userProfile.lng))
@@ -80,11 +84,11 @@ class PetPersonMapScreen extends StatelessWidget {
 
     _getMarkers();
 
-    latLng.LatLng _getCenterPoint(markers) {
+    latLng.LatLng _getCenterPoint() {
       latLng.LatLng _latLng;
 
       try {
-       _latLng = latLng.LatLng(markers.first.point.latitude,_markersList.first.point.longitude);
+       _latLng = latLng.LatLng(_markersList.first.point.latitude,_markersList.first.point.longitude);
       } catch(err) {
         print(err);
         _latLng  = latLng.LatLng(0,0); 
@@ -93,55 +97,50 @@ class PetPersonMapScreen extends StatelessWidget {
     }
 
 
-    return FutureBuilder<List<Marker>>(
-      future: _getMarkers(),
-      builder: (ctx,markers) => markers.connectionState == ConnectionState.waiting 
-      ? CircularProgressIndicator()
-      : Stack(
-        children: [
-          FlutterMap(
-            options: MapOptions(
-              //center: latLng.LatLng(52.39225792161001, -2.00660652485873),
-              center: _getCenterPoint(markers.data),
-              zoom: 13.0,
-              onTap: (pos,latLng) {}
-            ),
-            layers: [
-              TileLayerOptions(
-                //https://tile.osm.ch/switzerland/14/8544/5827.png
-                urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                subdomains: ['a', 'b', 'c'],
-                attributionBuilder: (_) {
-                  return Text(
-                    "© OpenStreetMap contributors",
-                    style: TextStyle(color:Colors.blue[800], fontSize: 20)
-                  
-                  );
-                },
-              ),
-              MarkerLayerOptions(
-                markers: markers.data!,
-              ),
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            //crossAxisAlignment: CrossAxisAlignment.center,
-            children:[
-              Center(
-                child: ElevatedButton(
-                  onPressed: () => Navigator.of(context).pop(), 
-                  child: Text('Close')
+    return Stack(
+              children: [
+                FlutterMap(
+                  options: MapOptions(
+                    //center: latLng.LatLng(52.39225792161001, -2.00660652485873),
+                    center: _getCenterPoint(),
+                    zoom: 13.0,
+                    onTap: (pos,latLng) {}
+                  ),
+                  layers: [
+                    TileLayerOptions(
+                      //https://tile.osm.ch/switzerland/14/8544/5827.png
+                      urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                      subdomains: ['a', 'b', 'c'],
+                      attributionBuilder: (_) {
+                        return Text(
+                          "© OpenStreetMap contributors",
+                          style: TextStyle(color:Colors.blue[800], fontSize: 20)
+                        
+                        );
+                      },
+                    ),
+                    MarkerLayerOptions(
+                      markers: _markersList,
+                    ),
+                  ],
                 ),
-              ),
-              SizedBox(
-                width: double.infinity,
-                height: _distFromBottom
-              )
-            ] 
-          ),
-        ]
-      )
-    );
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  //crossAxisAlignment: CrossAxisAlignment.center,
+                  children:[
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () => Navigator.of(context).pop(), 
+                        child: Text('Close')
+                      ),
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      height: _distFromBottom
+                    )
+                  ] 
+                ),
+              ]
+          );
   }
 }

@@ -89,6 +89,7 @@ class PetDetective extends StatelessWidget {
                 : HomeScreen()
             ),
           routes: {
+            HomeScreen.routeName : (ctx) => HomeScreen(),
             SigninScreen.routeName : (ctx) => SigninScreen(),
             RegisterScreen.routeName : (ctx) => RegisterScreen(),
             SignupCompleteScreen.routeName : (ctx) => SignupCompleteScreen(),

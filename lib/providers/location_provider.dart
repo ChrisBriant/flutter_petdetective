@@ -136,5 +136,17 @@ class LocationProvider extends ApiProvider with ChangeNotifier{
     }
   }
 
+
+  Future<Map<String,dynamic>?> getMyLocation() async {
+    final _prefs = await SharedPreferences.getInstance();
+
+    if(_prefs.containsKey('locationData')) {
+      Map<String,dynamic> _locationData = json.decode(_prefs.get('locationData') as String);
+      return _locationData;
+    } else {
+      return null;
+    }
+  }
+
 }
  

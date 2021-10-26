@@ -247,10 +247,11 @@ class Auth extends ApiProvider with ChangeNotifier {
       );
       return _userProfile;
     }
-
     throw HttpException('Something went wrong retrieving the user profile.');
+  }
 
-    
+  UserProfile? get savedProfile {
+    return _userProfile;
   }
 
 }

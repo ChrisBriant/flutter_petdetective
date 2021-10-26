@@ -63,11 +63,20 @@ class UserProfileScreen extends StatelessWidget {
                     children: [
                       Text('My location'),
                       ElevatedButton(
-                        onPressed: () {}, 
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(
+                            PetPersonMapScreen.routeName,
+                            arguments: {
+                              'mode': 'single-person',
+                            }
+                          );
+                        }, 
                         child: Text('View on Map')
                       ),
                       ElevatedButton(
-                        onPressed: () {}, 
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(MapScreen.routeName,arguments: {'sendLocationDataTo': 'prefs'});
+                        }, 
                         child: Text('Change Location')
                       ),
                     ],
